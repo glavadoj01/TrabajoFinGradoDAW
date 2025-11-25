@@ -9,6 +9,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 > Nota:
 >
 > Requiere de GitBash con capacidad de procesar .zip/.rar
+> Más información en [Página oficial GitHub NVM](https://github.com/nvm-sh/nvm)
 
 - Verificación:
 

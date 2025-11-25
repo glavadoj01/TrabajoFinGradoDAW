@@ -16,7 +16,7 @@
     ```
 
     Nota:
-    Consultar [01 - Instalacion NodeJs mediante NVM.md](./01%20-%20Instalacion%20NodeJS%20mediante%20NVM.md) para mayor información
+    Consultar [01 - Instalacion NodeJs mediante NVM.md](./01%20-%20Instalacion%20NodeJS%20mediante%20NVM.md) para mayor información o [Página oficial GitHub NVM](https://github.com/nvm-sh/nvm)
 
   - Verificar con:
 
