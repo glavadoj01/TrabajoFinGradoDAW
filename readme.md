@@ -58,3 +58,11 @@
     docker --version
     docker-compose --version
     ```
+
+- Instalar Volta:
+
+    Gestor para sincronizar instalaciones locales con instrucciones del proyecto
+
+    ```bash
+        winget install Volta.Volta
+    ```
