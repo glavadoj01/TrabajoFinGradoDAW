@@ -1,24 +1,29 @@
-# Relación de Software Utilizado
+# Descripción de Requerimientos y Procesos
 
-## 0. Software para diseño
+## Relación de Software Utilizado
+
+### 0. Software para diseño previo
 
 - draw.io
 - lunacy
 - MySQL WorkBench
 
-## 1. Software para desarrollo
+Más información en el PDF de [Presentación Noviembre](./00%20-%20Presentación%20Noviembre.pdf) - Anteproyecto y Análisis Previo
 
-- NVM:
-    Gestor de paquetes para instalar versiones NodeJS (incluye npm)
+### 1. Software para desarrollo
 
-    ```bash
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    ```
+#### 1.1 NVM
 
-    Nota:
-    Consultar [01 - Instalacion NodeJs mediante NVM.md](./01%20-%20Instalacion%20NodeJS%20mediante%20NVM.md) para mayor información o [Página oficial GitHub NVM](https://github.com/nvm-sh/nvm)
+Gestor de paquetes para instalar versiones NodeJS (incluye npm)
 
-  - Verificar con:
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+
+>Nota:
+>Consultar [Instalacion NodeJs mediante NVM.md](./01%20-%20Instalacion%20NodeJS%20mediante%20NVM.md) para mayor información o [Página oficial GitHub NVM](https://github.com/nvm-sh/nvm)
+
+- Verificar con:
 
     ```bash
     nvm ls
@@ -26,43 +31,122 @@
     npm -v
     ```
 
-- Instalar Angular CLI globalmente (front):
+#### 1.2 Angular CLI (front)
 
-    ```bash
-    npm install -g @angular/cli
-    ```
+```bash
+npm install -g @angular/cli
+```
 
-  - Verificar:
+- Verificar:
 
     ```bash
     ng version
     ```
 
-- Instalar NestJS CLI globalmente (back):
+#### 1.3 NestJS CLI (back)
 
-    ```bash
-    npm install -g @nestjs/cli
-    ```
+```bash
+npm install -g @nestjs/cli
+```
 
-  - Verificar:
+- Verificar:
 
     ```bash
     nest --version
     ```
 
-- Instalar Docker (AppStore):
+#### 1.4 Instalar Docker (AppStore)
 
-    Confirmar que Docker funciona:
+- Verificar:
 
     ```bash
     docker --version
     docker-compose --version
     ```
 
-- Instalar Volta:
+#### 1.5 Volta (si hay problemas con NVM)
 
-    Gestor para sincronizar instalaciones locales con instrucciones del proyecto
+Gestor para sincronizar instalaciones locales con instrucciones del proyecto
+
+```bash
+winget install Volta.Volta
+```
+
+- NVM vs Volta
+
+    Se debe priorizar NVM en 1º lugar respecto a volta, ya que se puede apagar facilmente si se requiere.
 
     ```bash
-        winget install Volta.Volta
+    where node
+    where npm
+    where ng
+    where nest
+    node -v
+    npm -v
     ```
+
+  - Interpretación:
+    - Ruta contiene AppData\Local\Volta\bin → Volta está activo.
+    - Ruta es C:\Program Files\nodejs\node.exe → suele ser nvm-windows (usa ese directorio como “link” de la versión activa).
+    - Ruta a Node en otro sitio (p.ej. Program Files\nodejs sin nvm) → instalación “sistema” de Node.
+
+- Ver PATH del usuario y del sistema por separado:
+
+    ```bash
+    [Environment]::GetEnvironmentVariable("Path","User") -split ';'
+    [Environment]::GetEnvironmentVariable("Path","Machine") -split ';'
+    ```
+
+- Activar/Desactivar NVM:
+
+    ```bash
+    nvm off
+    nvm on
+    ```
+
+- Reinstalar CLI's con Volta:
+
+    ```bash
+    volta install @angular/cli
+    volta install @nestjs/cli
+    ```
+
+#### 1.6 Tailwind's components
+
+- Instalación:
+
+    ```bash
+    npm install tailwindcss @tailwindcss/postcss postcss --force
+    ```
+
+- Para utilizarlo en el proyecto:
+
+    Tras crear un proyecto con Angular, debemos indicar el uso de Tailwind al mismo.
+
+  - Creación:
+
+    ```bash
+    ng new <project-name>
+    ```
+
+  - Create a .postcssrc.json file in the root:
+
+    ```bash
+    {
+    "plugins": {
+        "@tailwindcss/postcss": {}
+        }
+    }
+    ```
+
+  - Agregar @import en ./src/styles.css
+
+    ```bash
+    @import "tailwindcss";
+    ```
+
+Más información en la web oficial [www.tailwindcss.com](https://tailwindcss.com/docs/installation/framework-guides/angular)
+
+## Creación de un sitio estatico a partir del diseño en Lunacy
+
+WIP
