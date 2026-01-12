@@ -131,7 +131,7 @@ winget install Volta.Volta
 
   - Create a .postcssrc.json file in the root:
 
-    ```bash
+    ```json
     {
     "plugins": {
         "@tailwindcss/postcss": {}
@@ -141,11 +141,26 @@ winget install Volta.Volta
 
   - Agregar @import en ./src/styles.css
 
-    ```bash
+    ```css
     @import "tailwindcss";
     ```
 
 Más información en la web oficial [www.tailwindcss.com](https://tailwindcss.com/docs/installation/framework-guides/angular)
+
+#### 1.7 DaisyUI components
+
+- Install daisyUI as a Node package:
+
+    ```bash
+    npm i -D daisyui@latest
+    ```
+
+- Add daisyUI to app.css:
+
+    ```css
+    @import "tailwindcss";
+    @plugin "daisyui";
+    ```
 
 ## Creación de un sitio estatico a partir del diseño en Lunacy
 
