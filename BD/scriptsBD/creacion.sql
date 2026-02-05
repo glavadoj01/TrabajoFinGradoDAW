@@ -10,21 +10,34 @@ CREATE TABLE usuario (
     nombre_usuario 	VARCHAR(50) UNIQUE NOT NULL,
     nombre_real 	VARCHAR(50) NOT NULL,
     apellido 		VARCHAR(50)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 CREATE TABLE libro (
 	id_libro 		 INT PRIMARY KEY AUTO_INCREMENT,
     titulo_libro 	 VARCHAR(100) NOT NULL,
+    codigo_isbn 	 VARCHAR(20),
+    idioma_original  INT,
     paginas 		 INT,
     year_publicacion INT,
-    sinospis 		 TEXT
-);
+    sinospis 		 TEXT,
+
+    CONSTRAINT fk_libro_idiomaOriginal
+        FOREIGN KEY (idioma_original)
+        REFERENCES idiomas(id_idioma)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 CREATE TABLE genero (
 	id_genero 			INT PRIMARY KEY AUTO_INCREMENT,
     nombre_genero 		VARCHAR(100) UNIQUE NOT NULL,
     descripcion_genero 	TEXT
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+CREATE TABLE idiomas (
+    id_idioma 			INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_idioma 		VARCHAR(50) UNIQUE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 /* Entidades DEBILES */
 CREATE TABLE autor (
@@ -40,11 +53,11 @@ CREATE TABLE autor (
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 CREATE TABLE lista (
 	id_lista 			INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario 			INT DEFAULT NULL,
+    id_usuario 			INT NOT NULL DEFAULT 0,
     nombre_lista 		VARCHAR(100) UNIQUE NOT NULL,
     descripcion_lista 	TEXT,
     
@@ -52,8 +65,8 @@ CREATE TABLE lista (
 		FOREIGN KEY (id_usuario)
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
-        ON DELETE SET NULL
-);
+        ON DELETE SET DEFAULT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 CREATE TABLE evento (
 	id_evento 			INT PRIMARY KEY AUTO_INCREMENT,
@@ -69,7 +82,7 @@ CREATE TABLE evento (
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 /* Tablas derivadas de relaciones N:M */
 
@@ -99,13 +112,13 @@ CREATE TABLE libro_genero (
         REFERENCES genero(id_genero)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación B: Libro-Autor
 CREATE TABLE libro_autor (
 	id_libro INT NOT NULL,
     id_escritor INT NOT NULL,
-    autorPr BOOL DEFAULT FALSE,
+    autorPr BOOL NOT NULL DEFAULT FALSE,
     
     PRIMARY KEY (id_libro, id_escritor),
     
@@ -120,7 +133,7 @@ CREATE TABLE libro_autor (
         REFERENCES autor(id_autor)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación C: Lista-Contenido
 CREATE TABLE lista_contenido (
@@ -140,7 +153,7 @@ CREATE TABLE lista_contenido (
         REFERENCES libro(id_libro)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación D: Libro-Usuario
 CREATE TABLE libro_usuario (
@@ -161,7 +174,7 @@ CREATE TABLE libro_usuario (
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación E: Libro-Critica
 CREATE TABLE libro_critica (
@@ -169,7 +182,7 @@ CREATE TABLE libro_critica (
     id_usuario  		INT NOT NULL,
     titulo_critica		VARCHAR(100),
     texto_critica 		TEXT,
-    calificacion_libro 	TINYINT UNSIGNED CHECK (calificacion_libro BETWEEN 0 AND 5),
+    calificacion_libro 	TINYINT UNSIGNED NOT NULL CHECK (calificacion_libro BETWEEN 0 AND 5),
     
     PRIMARY KEY (id_libro, id_usuario),
 
@@ -184,7 +197,7 @@ CREATE TABLE libro_critica (
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación F: Lista-Comentario
 CREATE TABLE lista_comentario (
@@ -211,13 +224,13 @@ CREATE TABLE lista_comentario (
         REFERENCES lista_comentario(id_listaComentario)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación G: Lista-Usuario
 CREATE TABLE lista_usuario (
     id_lista        	INT NOT NULL,
     id_usuario      	INT NOT NULL,
-    calificacion_lista	TINYINT UNSIGNED CHECK (calificacion_lista BETWEEN 0 AND 5),
+    calificacion_lista	TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_lista BETWEEN 0 AND 5),
 
     PRIMARY KEY (id_lista, id_usuario),
 
@@ -232,14 +245,14 @@ CREATE TABLE lista_usuario (
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación H: Usuario-Evento
 CREATE TABLE evento_usuario (
 	id_evento       	INT NOT NULL,
     id_usuario      	INT NOT NULL,
-    calificacion_evento	TINYINT UNSIGNED CHECK (calificacion_evento BETWEEN 0 AND 5),
-    asiste          	TINYINT UNSIGNED CHECK (asiste IN (0,1,2)) DEFAULT NULL, -- 0:No  1:Sí  2:Quizas
+    calificacion_evento	TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_evento BETWEEN 0 AND 5),
+    asiste          	TINYINT UNSIGNED DEFAULT NULL CHECK (asiste IN (0,1,2)), -- 0:No  1:Sí  2:Quizas
 
     PRIMARY KEY (id_evento, id_usuario),
 
@@ -254,7 +267,7 @@ CREATE TABLE evento_usuario (
         REFERENCES evento(id_evento)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación I: Evento-Comentario
 CREATE TABLE evento_comentario (
@@ -281,7 +294,7 @@ CREATE TABLE evento_comentario (
         REFERENCES evento_comentario(id_eventoComentario)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- Relación H: Evento-Contenido
 CREATE TABLE evento_contenido (
@@ -302,4 +315,4 @@ CREATE TABLE evento_contenido (
         REFERENCES libro(id_libro)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
