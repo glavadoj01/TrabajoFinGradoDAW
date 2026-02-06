@@ -12,6 +12,17 @@ CREATE TABLE usuario (
     apellido 		VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+CREATE TABLE genero (
+	id_genero 			INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_genero 		VARCHAR(100) UNIQUE NOT NULL,
+    descripcion_genero 	TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+CREATE TABLE idiomas (
+    id_idioma 			INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_idioma 		VARCHAR(50) UNIQUE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
 CREATE TABLE libro (
 	id_libro 		 INT PRIMARY KEY AUTO_INCREMENT,
     titulo_libro 	 VARCHAR(100) NOT NULL,
@@ -26,17 +37,6 @@ CREATE TABLE libro (
         REFERENCES idiomas(id_idioma)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
-CREATE TABLE genero (
-	id_genero 			INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_genero 		VARCHAR(100) UNIQUE NOT NULL,
-    descripcion_genero 	TEXT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
-CREATE TABLE idiomas (
-    id_idioma 			INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_idioma 		VARCHAR(50) UNIQUE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 /* Entidades DEBILES */
