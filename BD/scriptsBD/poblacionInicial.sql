@@ -30,7 +30,7 @@ INSERT INTO autor (id_usuario, nombre_autor, apellido_autor, pais_autor, esUsuar
 /* ============================
    LIBROS (reales + inventados)
    ============================ */
-INSERT INTO libro (titulo_libro, paginas, year_publicacion, sinospis) VALUES
+INSERT INTO libro (titulo_libro, paginas, year_publicacion, sinopsis) VALUES
 ('El Señor de los Anillos', 1200, 1954, 'La Comunidad del Anillo y la lucha contra Sauron.'),
 ('Fundación', 255, 1951, 'El declive del Imperio Galáctico.'),
 ('It', 1138, 1986, 'Un ente maligno aterroriza Derry.'),

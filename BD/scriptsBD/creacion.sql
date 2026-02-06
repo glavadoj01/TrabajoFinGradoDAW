@@ -30,7 +30,7 @@ CREATE TABLE libro (
     idioma_original  INT,
     paginas 		 INT,
     year_publicacion INT,
-    sinospis 		 TEXT,
+    sinopsis 		 TEXT,
 
     CONSTRAINT fk_libro_idiomaOriginal
         FOREIGN KEY (idioma_original)
