@@ -183,7 +183,8 @@ CREATE TABLE libro_critica (
     titulo_critica		VARCHAR(100),
     texto_critica 		TEXT,
     calificacion_libro 	TINYINT UNSIGNED NOT NULL CHECK (calificacion_libro BETWEEN 0 AND 5),
-    
+    fecha_critica 		DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
+
     PRIMARY KEY (id_libro, id_usuario),
 
     CONSTRAINT fk_libroCritica_idLibro
