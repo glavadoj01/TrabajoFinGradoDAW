@@ -9,7 +9,7 @@ CREATE TABLE usuario (
 	id_usuario 		INT PRIMARY KEY AUTO_INCREMENT,
     nombre_usuario 	VARCHAR(50) UNIQUE NOT NULL,
     nombre_real 	VARCHAR(50) NOT NULL,
-    apellido 		VARCHAR(50)
+    apellido_usuario VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 CREATE TABLE genero (
@@ -57,12 +57,12 @@ CREATE TABLE autor (
 
 CREATE TABLE lista (
 	id_lista 			INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario 			INT NOT NULL DEFAULT 0,
+    id_usuarioCrd 			INT NOT NULL DEFAULT 0,
     nombre_lista 		VARCHAR(100) UNIQUE NOT NULL,
     descripcion_lista 	TEXT,
     
     CONSTRAINT fk_lista_usuario 
-		FOREIGN KEY (id_usuario)
+		FOREIGN KEY (id_usuarioCrd)
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE SET DEFAULT
@@ -70,7 +70,7 @@ CREATE TABLE lista (
 
 CREATE TABLE evento (
 	id_evento 			INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario 			INT NOT NULL,
+    id_usuarioCrd 			INT NOT NULL,
     nombre_evento 		VARCHAR(100) NOT NULL,
     fecha_evento 		DATE NOT NULL, -- YYYY-MM-DD
     hora_evento 		TIME, 		   -- HH:MM:SS
@@ -78,7 +78,7 @@ CREATE TABLE evento (
 	descripcion_evento 	TEXT NOT NULL,
     
     CONSTRAINT fk_evento_usuario
-		FOREIGN KEY (id_usuario)
+		FOREIGN KEY (id_usuarioCrd)
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
@@ -207,6 +207,8 @@ CREATE TABLE lista_comentario (
     id_usuario          INT NOT NULL,
     texto_comentario    TEXT NOT NULL,
     id_com_respuesta    INT DEFAULT NULL,
+    fecha_comentario	DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
+
 
     CONSTRAINT fk_listaComentario_idLista
         FOREIGN KEY (id_lista)
@@ -277,6 +279,7 @@ CREATE TABLE evento_comentario (
     id_usuario          INT NOT NULL,
     texto_comentario    TEXT NOT NULL,
     id_com_respuesta    INT DEFAULT NULL,
+    fecha_comentario    DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
 
     CONSTRAINT fk_eventoComentario_idEvento
         FOREIGN KEY (id_evento)

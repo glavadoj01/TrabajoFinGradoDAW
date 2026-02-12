@@ -2,13 +2,13 @@
    USUARIO ID 0 (para SET DEFAULT en FK)
    ============================ */
 SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
-INSERT INTO usuario (id_usuario, nombre_usuario, nombre_real, apellido) VALUES (0, 'usuario0', 'Usuario Cero', 'Reservado');
+INSERT INTO usuario (id_usuario, nombre_usuario, nombre_real, apellido_usuario) VALUES (0, 'usuario0', 'Usuario Cero', 'Reservado');
 SET SESSION sql_mode = '';
 
 /* ============================
    USUARIOS
    ============================ */
-INSERT INTO usuario (nombre_usuario, nombre_real, apellido) VALUES
+INSERT INTO usuario (nombre_usuario, nombre_real, apellido_usuario) VALUES
 ('usuario1', 'Usuario1', 'Apellido Uno'),
 ('usuario2', 'Usuario2', 'Apellido Dos'),
 ('usuario3', 'Usuario3', 'Apellido Tres'),
