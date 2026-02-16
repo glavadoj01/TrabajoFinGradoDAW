@@ -1,167 +1,74 @@
-# Descripción de Requerimientos y Procesos
+# Resumen y guía del repositorio
 
-## Relación de Software Utilizado
+Este repositorio contiene el proyecto completo del TFC “Círculo de Lectura”, incluyendo documentación, recursos de diseño, scripts y enlaces al código fuente tanto del frontend (Angular) como del backend (Node.js/NestJS).
 
-### 0. Software para diseño previo
+---
+
+## 0. Software para diseño previo
 
 - draw.io
-- lunacy
-- MySQL WorkBench
+- Lunacy
+- MySQL WorkBench / MySQL Server
 
 Más información en el PDF de [Presentación Noviembre](./00%20-%20Presentación%20Noviembre.pdf) - Anteproyecto y Análisis Previo
 
-### 1. Software para desarrollo
+---
 
-#### 1.1 NVM
+## 1. Requisitos básicos
 
-Gestor de paquetes para instalar versiones NodeJS (incluye npm)
+Resumen de requisitos mínimos para trabajar con el proyecto:
 
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-```
+- **Node.js** (recomendado >= 22.x)
+- **npm** (recomendado >= 11.x)
+- **Git** (opcional, para clonar repositorios)
+- **MySQL** >= 8.x (solo para backend)
 
->Nota:
->Consultar [Instalacion NodeJs mediante NVM.md](./01%20-%20Instalacion%20NodeJS%20mediante%20NVM.md) para mayor información o [Página oficial GitHub NVM](https://github.com/nvm-sh/nvm)
+Consulta la guía centralizada en [01 - Instalación Requisitos.md](./01%20-%20Instalación%20Requisitos.md) para ver instrucciones detalladas, dependencias adicionales y pasos de instalación tanto para el frontend como para el backend.
 
-- Verificar con:
+---
 
-    ```bash
-    nvm ls
-    node -v
-    npm -v
-    ```
+## 2. Estructura y contenido del repositorio
 
-#### 1.2 Angular CLI (front)
+El repositorio está organizado en varias carpetas y archivos principales:
 
-```bash
-npm install -g @angular/cli
-```
+- **BD/**: Scripts y recursos relacionados con la base de datos.
+- **Modelo ER/**: Modelado entidad-relación de la base de datos realizado con draw.io.
+- **PaginasLunacyd/**: Recursos y diseños realizados con Lunacy.
+- **00 - Instalación Requisitos.md**: Guía unificada de requisitos e instalación.
+- **01 - Presentación Noviembre.pdf**: Anteproyecto y análisis previo.
+- **02 - Presentación Febrero.pdf**: Presentación y resumen del proyecto (ver siguiente sección).
+- **LICENSE**: Licencia del proyecto.
+- **readme.md**: Este archivo.
 
-- Verificar:
+---
 
-    ```bash
-    ng version
-    ```
+## 3. Resumen del proyecto (según 02 - Presentación Febrero)
 
-#### 1.3 NestJS CLI (back)
+El documento "Presentación Febrero" recoge el proceso completo de diseño, desarrollo y primeras funcionalidades del TFC “Círculo de Lectura”.
 
-```bash
-npm install -g @nestjs/cli
-```
+**1. Introducción y objetivos**  
+Se presenta el contexto y la motivación del proyecto, orientado a la creación de una plataforma web para la gestión de un círculo de lectura, con funcionalidades para usuarios, libros, listas, eventos y críticas.
 
-- Verificar:
+**2. Marco teórico**  
+Breve repaso a los conceptos y tecnologías clave que fundamentan el desarrollo del proyecto.
 
-    ```bash
-    nest --version
-    ```
+**3. Desarrollo del proyecto**  
+Incluye el anteproyecto, el diseño inicial de la base de datos (modelo entidad-relación, atributos y funcionalidades básicas), y los primeros bocetos de la interfaz web (páginas principales: inicio, catálogo, listas, detalle de libro, eventos, perfil, etc.).
 
-#### 1.4 Instalar Docker (AppStore)
+**4. Selección tecnológica y funcionamiento**  
+Se justifica la elección de tecnologías (Angular, Node.js/NestJS, MySQL), se describe la creación de la base de datos, la puesta en marcha del backend y frontend, y la implementación de las primeras funcionalidades (detalle de libro, tema claro/oscuro, etc.).
 
-- Verificar:
+**5. Conclusiones y entregas**  
+Se resumen los logros de la primera y segunda entrega: desde el anteproyecto hasta la puesta en marcha de la aplicación y la integración de funcionalidades clave.
 
-    ```bash
-    docker --version
-    docker-compose --version
-    ```
+**6. Anexos**  
+Incluyen manual de usuario, manual de instalación, rutas de ejemplo y otros recursos de apoyo.
 
-#### 1.5 Volta (si hay problemas con NVM)
+Este resumen es solo una visión global. Para detalles completos, consultar el PDF "02 - Presentación Febrero.pdf" incluido en el repositorio.
 
-Gestor para sincronizar instalaciones locales con instrucciones del proyecto
+## 4. Enlaces Finales
 
-```bash
-winget install Volta.Volta
-```
+Para más detalles sobre el uso, despliegue o desarrollo, consulta los README específicos de cada subproyecto y la documentación incluida en este repositorio.
 
-- NVM vs Volta
-
-    Se debe priorizar NVM en 1º lugar respecto a volta, ya que se puede apagar facilmente si se requiere.
-
-    ```bash
-    where node
-    where npm
-    where ng
-    where nest
-    node -v
-    npm -v
-    ```
-
-  - Interpretación:
-    - Ruta contiene AppData\Local\Volta\bin → Volta está activo.
-    - Ruta es C:\Program Files\nodejs\node.exe → suele ser nvm-windows (usa ese directorio como “link” de la versión activa).
-    - Ruta a Node en otro sitio (p.ej. Program Files\nodejs sin nvm) → instalación “sistema” de Node.
-
-- Ver PATH del usuario y del sistema por separado:
-
-    ```bash
-    [Environment]::GetEnvironmentVariable("Path","User") -split ';'
-    [Environment]::GetEnvironmentVariable("Path","Machine") -split ';'
-    ```
-
-- Activar/Desactivar NVM:
-
-    ```bash
-    nvm off
-    nvm on
-    ```
-
-- Reinstalar CLI's con Volta:
-
-    ```bash
-    volta install @angular/cli
-    volta install @nestjs/cli
-    ```
-
-#### 1.6 Tailwind's components
-
-- Instalación:
-
-    ```bash
-    npm install tailwindcss @tailwindcss/postcss postcss --force
-    ```
-
-- Para utilizarlo en el proyecto:
-
-    Tras crear un proyecto con Angular, debemos indicar el uso de Tailwind al mismo.
-
-  - Creación:
-
-    ```bash
-    ng new <project-name>
-    ```
-
-  - Create a .postcssrc.json file in the root:
-
-    ```json
-    {
-    "plugins": {
-        "@tailwindcss/postcss": {}
-        }
-    }
-    ```
-
-  - Agregar @import en ./src/styles.css
-
-    ```css
-    @import "tailwindcss";
-    ```
-
-Más información en la web oficial [www.tailwindcss.com](https://tailwindcss.com/docs/installation/framework-guides/angular)
-
-#### 1.7 DaisyUI components
-
-- Install daisyUI as a Node package:
-
-    ```bash
-    npm i -D daisyui@latest
-    ```
-
-- Add daisyUI to app.css:
-
-    ```css
-    @import "tailwindcss";
-    @plugin "daisyui";
-    ```
-
-## Creación de un sitio estatico a partir del diseño en Lunacy
-
-WIP
+- [Repositorio Frontend](https://github.com/glavadoj01/Circulo_Lectura_Fronted)
+- [Repositorio Backend](https://github.com/glavadoj01/BackEnd_Circulo_Lectura)
