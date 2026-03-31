@@ -10,8 +10,8 @@ Este documento centraliza los requisitos y pasos de instalación de dependencias
 
 ## 1. Requisitos generales
 
-- **Node.js** (recomendado: >= 22.x para frontend, >= 18.x para backend)
 - **npm** (recomendado: >= 11.x frontend, >= 9.x backend)
+- **Node.js** (recomendado: >= 22.x para frontend, >= 18.x para backend)
 - **Git** (opcional, para clonar repositorios)
 - **MySQL** >= 8.x (solo backend) - Instalación independiente ([Enlace web MySQL](https://dev.mysql.com/downloads/windows/installer/8.0.html))
 
@@ -19,15 +19,34 @@ Este documento centraliza los requisitos y pasos de instalación de dependencias
 
 Opcional/recomendado:
 
-- **NVM** (Node Version Manager) para gestionar versiones de Node.js
-- **Volta** (alternativa a NVM para gestión de versiones)
+- **NVM** (Node Version Manager) para gestionar versiones de Node.js (más orientado a UNIX/Linux -> cmd/powerShell no lo detectan, requiere GitBash)
+- **Volta** Alternativa especifica para Windows a NVM (para gestión de versiones -> Funciona en cdm/powerShell/GitBash)
 - **Docker** (para entornos de desarrollo avanzados) - WIP para despliegue
+- **GitBash** Terminal nativa/incluida con Git
 
 ---
 
-## 2. Instalación de NVM (Node Version Manager)
+## 2. Instalacción de **Gestor node**
 
-Permite instalar y alternar entre distintas versiones de Node.js fácilmente.
+### 2.1. Volta (Versión/Método Utilizado)
+
+Para usar Volta para gestionar versiones de Node.js y CLI globales:
+
+```bash
+winget install Volta.Volta
+```
+
+Verifica la instalación:
+
+```bash
+volta --version
+```
+
+>Nota: Consulta la documentación oficial para más detalles: [https://volta.sh/](https://volta.sh/)
+
+### 2.2. Instalación de NVM (Alternativa)
+
+Para usar NVM para gestionar versiones de Node.js y CLI globales.
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -38,44 +57,44 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 Verifica la instalación:
 
 ```bash
-command -v nvm
 nvm --version
 ```
 
 ---
 
-## 3. Instalación de Node.js y npm (vía NVM)
+## 3. Instalación de Node.js y npm
 
-Consulta versiones disponibles:
+### 3.1. Vía Volta (Opción Utilizada)
+
+Instalar la versión recomendada:
 
 ```bash
-nvm ls-remote
+volta install node@22
 ```
 
-Instala la versión recomendada para cada proyecto:
+En cada proyecto, aseguramos el uso de node@22 (vía entrada en `package.json`) ejecutando:
 
-- **Frontend (Angular):**
+```bash
+volta pin node@22 # En el directorio raiz de cada proyecto
+```
 
-    ```bash
-    nvm install 22
-    nvm use 22
-    ```
+### 3.2. Vía NVM
 
-- **Backend (NestJS):**
+Instala la versión recomendada:
 
-    ```bash
-    nvm install 18
-    nvm use 18
-    ```
+```bash
+nvm install 22
+nvm use 22
+```
 
 Puedes crear un archivo `.nvmrc` en la raíz de cada proyecto para facilitar la selección automática de versión:
 
 ```bash
-echo "22" > .nvmrc   # Frontend
-echo "18" > .nvmrc   # Backend
+echo "22" > .nvmrc   # En directorio raíz del Frontend
+echo "22" > .nvmrc   # En directorio raíz del Backend
 ```
 
-Verifica versiones:
+### 3.3. Verificar versiones
 
 ```bash
 node -v
@@ -85,6 +104,22 @@ npm -v
 ---
 
 ## 4. Instalación de dependencias globales
+
+### 4.1. Utilizando Volta (Opción Utiliada)
+
+- **Angular CLI** (solo frontend):
+
+    ```bash
+    volta install @angular/cli@21 # Instalación Global
+    ```
+
+- **NestJS CLI** (solo backend):
+
+    ```bash
+    volta install @nestjs/cli # Instalación Global
+    ```
+
+### 4.2. Utilizando NVM/NPM
 
 - **Angular CLI** (solo frontend):
 
@@ -98,7 +133,7 @@ npm -v
     npm install -g @nestjs/cli
     ```
 
-Verifica instalación:
+### 4.3. Verificar instalación
 
 ```bash
 ng version    # Angular CLI
@@ -109,7 +144,7 @@ nest --version # NestJS CLI
 
 ## 5. Instalación de dependencias del proyecto
 
-En la raíz de cada proyecto (frontend y backend), ejecuta:
+En la raíz de cada proyecto (frontend y backend), ejecutar:
 
 ```bash
 npm install
@@ -121,6 +156,8 @@ Esto instalará todas las dependencias listadas en el `package.json` correspondi
 
 ## 6. Dependencias adicionales (Frontend)
 
+>Nota: A modo de documentación, ya que se incluyen en el package.json y se instalan con `npm i`
+
 - **TailwindCSS y DaisyUI** (estilos y componentes):
 
     ```bash
@@ -128,29 +165,18 @@ Esto instalará todas las dependencias listadas en el `package.json` correspondi
     npm i -D daisyui@latest
     ```
 
-Requieren de importación/modificación en ficheros especificos:
+    Requieren ademas de importación/modificación en ficheros especificos:
 
-- [Web de Tailwind con instrucciones para Proyectos Angular](https://tailwindcss.com/docs/installation/framework-guides/angular)
-- [Web de DaisyUI con instrucciones para Proeyctos Angular/Tailwind](https://daisyui.com/docs/install/angular/)
+    - [Web de Tailwind con instrucciones para Proyectos Angular](https://tailwindcss.com/docs/installation/framework-guides/angular)
+    - [Web de DaisyUI con instrucciones para Proeyctos Angular/Tailwind](https://daisyui.com/docs/install/angular/)
 
+- Configurar (si procede) y renombrar el fichero `_environments.ts` con las instrucciones que contiene.
 ---
 
 ## 7. Dependencias adicionales (Backend)
 
 - **MySQL** debe estar instalado y en ejecución.
-- Configura las variables de entorno en el archivo `.env` según las instrucciones del proyecto backend.
-
----
-
-## 8. Volta (opcional)
-
-Si prefieres usar Volta para gestionar versiones de Node.js y CLI globales:
-
-```bash
-winget install Volta.Volta
-```
-
-Consulta la documentación oficial para más detalles: [https://volta.sh/](https://volta.sh/)
+- Configura las variables de entorno en el archivo `_.env` y renombrar el fichero según las instrucciones del proyecto backend (ReadMe y propio fichero `_.env`).
 
 ---
 

@@ -72,3 +72,5 @@ Para más detalles sobre el uso, despliegue o desarrollo, consulta los README es
 
 - [Repositorio Frontend](https://github.com/glavadoj01/Circulo_Lectura_Fronted)
 - [Repositorio Backend](https://github.com/glavadoj01/BackEnd_Circulo_Lectura)
+
+© Gonzalo Lavado, 2026
