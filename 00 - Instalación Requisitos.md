@@ -10,8 +10,8 @@ Este documento centraliza los requisitos y pasos de instalación de dependencias
 
 ## 1. Requisitos generales
 
-- **npm** (recomendado: >= 11.x frontend, >= 9.x backend)
-- **Node.js** (recomendado: >= 22.x para frontend, >= 18.x para backend)
+- **npm** recomendado: >= 11.6.x
+- **Node.js** recomendado: >= 22.21.x
 - **Git** (opcional, para clonar repositorios)
 - **MySQL** >= 8.x (solo backend) - Instalación independiente ([Enlace web MySQL](https://dev.mysql.com/downloads/windows/installer/8.0.html))
 
@@ -20,7 +20,7 @@ Este documento centraliza los requisitos y pasos de instalación de dependencias
 Opcional/recomendado:
 
 - **NVM** (Node Version Manager) para gestionar versiones de Node.js (más orientado a UNIX/Linux -> cmd/powerShell no lo detectan, requiere GitBash)
-- **Volta** Alternativa especifica para Windows a NVM (para gestión de versiones -> Funciona en cdm/powerShell/GitBash)
+- **Volta** Alternativa especifica para Windows a NVM (para gestión de versiones -> Funciona en cmd/powerShell/GitBash)
 - **Docker** (para entornos de desarrollo avanzados) - WIP para despliegue
 - **GitBash** Terminal nativa/incluida con Git
 

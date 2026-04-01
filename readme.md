@@ -18,12 +18,12 @@ Más información en el PDF de [Presentación Noviembre](./00%20-%20Presentació
 
 Resumen de requisitos mínimos para trabajar con el proyecto:
 
-- **Node.js** (recomendado >= 22.x)
-- **npm** (recomendado >= 11.x)
+- **Node.js** (recomendado >= 22.21.0)
+- **npm** (recomendado >= 11.6.0)
 - **Git** (opcional, para clonar repositorios)
 - **MySQL** >= 8.x (solo para backend)
 
-Consulta la guía centralizada en [01 - Instalación Requisitos.md](./01%20-%20Instalación%20Requisitos.md) para ver instrucciones detalladas, dependencias adicionales y pasos de instalación tanto para el frontend como para el backend.
+Consulta la guía centralizada en [00 - Instalación Requisitos.md](./00%20-%20Instalación%20Requisitos.md) para ver instrucciones detalladas, dependencias adicionales y pasos de instalación tanto para el frontend como para el backend.
 
 ---
 
@@ -37,6 +37,7 @@ El repositorio está organizado en varias carpetas y archivos principales:
 - **00 - Instalación Requisitos.md**: Guía unificada de requisitos e instalación.
 - **01 - Presentación Noviembre.pdf**: Anteproyecto y análisis previo.
 - **02 - Presentación Febrero.pdf**: Presentación y resumen del proyecto (ver siguiente sección).
+- **03 - Presentación Abril.pdf**: WIP
 - **LICENSE**: Licencia del proyecto.
 - **readme.md**: Este archivo.
 
