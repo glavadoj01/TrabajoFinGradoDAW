@@ -43,7 +43,7 @@ El repositorio está organizado en varias carpetas y archivos principales:
 
 ---
 
-## 3. Resumen del proyecto (según 02 - Presentación Febrero)
+## 3. Resumen del proyecto (según 03 - Presentación Abril)
 
 El documento "Presentación Febrero" recoge el proceso completo de diseño, desarrollo y primeras funcionalidades del TFC “Círculo de Lectura”.
 
