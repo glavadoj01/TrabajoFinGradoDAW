@@ -6,7 +6,7 @@
 
 ## 1. Portada
 
-![Portada TFC](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/imgs/00-portada.png)
+![Portada TFC](anexos/imgs/00-portada.png)
 
 **Título del proyecto**  
 Círculo de Lectura – Plataforma Web para la gestión de un círculo de lectura local
@@ -17,7 +17,7 @@ Desarrollo de Aplicaciones Web (DAW)
 **Centro educativo**  
 IES Suarez de Fígueroa
 
-![Logotipo del centro](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/imgs/logo_suarez.png)
+![Logotipo del centro](anexos/imgs/logo_suarez.png)
 
 **Autor del proyecto**  
 Gonzalo Lavado Jaén
@@ -150,15 +150,15 @@ El proyecto integra contenidos de:
 
 **Diagrama E/R**
 
-![Diagrama ER](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/Diagramas/01-Modelo.png)
+![Diagrama ER](Diagramas/01-Modelo.png)
 
 **Modelo Relacional**
 
-![Modelo Relacional](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/Diagramas/02-Diagrama_de_Atributos.png)
+![Modelo Relacional](anexos/Diagramas/02-Diagrama_de_Atributos.png)
 
 **Diágrama de Funcionalidades**
 
-![Diagrama de Funcionalidades](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/Diagramas/03-Esquema_de_Funcionalidades.png)
+![Diagrama de Funcionalidades](anexos/Diagramas/03-Esquema_de_Funcionalidades.png)
 
 Incluye entidades como:
 
@@ -183,27 +183,27 @@ Prototipos realizados con Lunacy: [Enlace a Lunacyd](https://www.lunacyapp.com/e
 
 - Inicio
 
-  ![Inicio](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_Bienvenida.png)
+  ![Inicio](anexos/PaginasLunacyd/Pagina_Bienvenida.png)
 
 - Catalogo de Libros
 
-  ![Catálogo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_Catálogo.png)
+  ![Catálogo](anexos/PaginasLunacyd/Pagina_Catálogo.png)
 
 - Detalle de una Lista
 
-  ![Listas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_de_una_Lista.png)
+  ![Listas](anexos/PaginasLunacyd/Pagina_de_una_Lista.png)
 
 - Detalle de un Libro
 
-  ![Libro](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_de_un_Libro.png)
+  ![Libro](anexos/PaginasLunacyd/Pagina_de_un_Libro.png)
 
 - Detalle de un Evento
 
-  ![Evento](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_de_un_Evento.png)
+  ![Evento](anexos/PaginasLunacyd/Pagina_de_un_Evento.png)
 
 - Perfil de usuario
 
-  ![Perfil](https://github.com/suarezfigueroa/2025-2026_GonzaloLavadoanexos/PaginasLunacyd/Pagina_Perfil.png)
+  ![Perfil](anexos/PaginasLunacyd/Pagina_Perfil.png)
 
 Características:
 
@@ -396,7 +396,7 @@ Estos token han sido insertados manualmente en la tabla de sesiones desde el scr
 
 ## Anexos (opcional)
 
-- **Anexo I:** [Instalación Requisitos.md](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/01-Instalación_Requisitos.md)
+- **Anexo I:** [Instalación Requisitos.md](anexos/01-Instalación_Requisitos.md)
 - **Anexo II:** [Rutas para peticiones de ejemplo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/02-Rutas_Back_Ejemplos.pdf)
-- **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Diagramas)
-- **Anexo IX**: [Entregas Pasadas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Presentaciones_Pasadas)
+- **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Diagramas/)
+- **Anexo IX**: [Entregas Pasadas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Presentaciones_Pasadas/)
