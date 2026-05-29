@@ -354,6 +354,11 @@ Cuenta de Administrador
 - usuario: `usuario1@example.com`
 - contraseña: `1Ab@3456789`
 
+Cuenta de otro Usuario:
+
+- usuario: `usuario2@example.com`
+- contraseña: `aA!!23456789`
+
 Tokens de sesiones para pruebas del back/Postman
 
 - Tokens Expirados:
