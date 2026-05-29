@@ -2,6 +2,8 @@
 
 **Círculo de Lectura – Aplicación Web**
 
+---
+
 ## 1. Portada
 
 ![Portada TFC](anexos/imgs/00-portada.png)
@@ -31,6 +33,8 @@ José Andrés Paredes Arribas
 - Frontend: https://github.com/usuario/circulo-lectura-frontend
 - Backend: https://github.com/usuario/circulo-lectura-backend
 
+---
+
 ## 2. Índice
 
 - [Memoria Proyecto Final de Ciclo](#memoria-proyecto-final-de-ciclo)
@@ -58,11 +62,15 @@ José Andrés Paredes Arribas
   - [13. Bibliografía](#13-bibliografía)
   - [Anexos (opcional)](#anexos-opcional)
 
+---
+
 ## 3. Introducción
 
 El proyecto consiste en el desarrollo de una aplicación web destinada a la gestión y dinamización de un círculo de lectura local. La plataforma permite organizar eventos, compartir listas de libros, publicar reseñas y fomentar la interacción entre lectores.
 
 El desarrollo se ha realizado siguiendo principios de accesibilidad, modularidad, seguridad y escalabilidad, integrando una base de datos relacional, un backend en NodeJS/Express y un frontend moderno en Angular.
+
+---
 
 ## 4. Objetivos del proyecto
 
@@ -77,6 +85,8 @@ El desarrollo se ha realizado siguiendo principios de accesibilidad, modularidad
   - Seguridad y accesibilidad
   - Documentación técnica
 
+---
+
 ## 5. Justificación del proyecto
 
 ### 5.1 Vinculación contenidos vistos en el Ciclo Formativo
@@ -89,6 +99,8 @@ El proyecto integra contenidos de:
 - **Despliegue:** hosting local, variables de entorno, CORS.
 - **Interfaces:** prototipado con Lunacy.
 - **Seguridad:** validación, control de acceso, sanitización.
+
+---
 
 ## 6. Recursos utilizados
 
@@ -117,6 +129,8 @@ El proyecto integra contenidos de:
 - APIs propias del backend
 - Recursos visuales de referencia (Filmaffinity, IMDB, etc.)
 
+---
+
 ## 7. Tecnologías de desarrollo
 
 - REST API
@@ -128,17 +142,22 @@ El proyecto integra contenidos de:
 - CORS + dotenv
 - Bcrypt
 
+---
+
 ## 8. Diseño del proyecto
 
 ### 8.1 Diseño de la base de datos
 
-**Diagrama E/R**  
+**Diagrama E/R**
+
 ![Diagrama ER](anexos/Diagramas/01-Modelo.png)
 
-**Modelo Relacional**  
+**Modelo Relacional**
+
 ![Modelo Relacional](anexos/Diagramas/02-Diagrama_de_Atributos.png)
 
 **Diágrama de Funcionalidades**
+
 ![Diagrama de Funcionalidades](anexos/Diagramas/03-Esquema_de_Funcionalidades.png)
 
 Incluye entidades como:
@@ -160,9 +179,10 @@ Scripts incluidos en [anexos](anexos\scriptsBD):
 
 ### 8.3 Diseño de la interfaz de usuario
 
-Prototipos realizados con Lunacy:
+Prototipos realizados con Lunacy: [Enlace a Lunacyd](https://www.lunacyapp.com/eu/CncRnbg-uUilN9kWvV7aqQ/Circulo-Lectura)
 
 - Inicio
+
   ![Inicio](anexos/PaginasLunacyd/Pagina_Bienvenida.png)
 
 - Catalogo de Libros
@@ -205,6 +225,8 @@ Características:
 - Usuario 1 (Administrador)
 - Usuarios ficticios generados para reseñas y comentarios
 - Se puede crear usuarios nuevos
+
+---
 
 ## 9. Lógica/codificación del proyecto
 
@@ -295,6 +317,8 @@ main.ts                                         # Ejecuta la verificación de va
                     └── middlewares                 # Intercepta las rutas y verifica accesos
 ```
 
+---
+
 ## 10. Despliegue Web del proyecto
 
 - Requisitos: NodeJS, MySQL, Angular CLI
@@ -344,6 +368,8 @@ Tokens de sesiones para pruebas del back/Postman
 
 Estos token han sido insertados manualmente en la tabla de sesiones desde el script de poblacionInicial. El funcionamiento real en tiempo de ejecucción se realiza mediante `bcrypt`.
 
+---
+
 ## 12. Conclusiones y aspectos a mejorar
 
 - El diseño modular ha permitido una evolución fluida del proyecto.
@@ -352,6 +378,8 @@ Estos token han sido insertados manualmente en la tabla de sesiones desde el scr
 - La BD ha requerido ajustes durante el desarrollo mediante ciclos PDCA.
 - Queda pendiente la definición de paleta de colores clara.
 - Para versiones futuras, se podría mejorar/optimizar el nº de llamadas front-back.
+
+---
 
 ## 13. Bibliografía
 
@@ -364,8 +392,11 @@ Estos token han sido insertados manualmente en la tabla de sesiones desde el scr
 - BD de imagenes - https://picsum.photos/
 - Documentación Angular, NodeJS, MySQL
 
+---
+
 ## Anexos (opcional)
 
-- **Anexo I:** [Instalación Requisitos.md](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/01-Instalación_Requisitos.md)
-- **Anexo II:** [Rutas para peticiones de ejemplo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/02-Rutas_Back_Ejemplos.pdf)
-- **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/)
+- **Anexo I:** [Instalación Requisitos.md](anexos/01-Instalación_Requisitos.md)
+- **Anexo II:** [Rutas para peticiones de ejemplo](anexos/02-Rutas_Back_Ejemplos.pdf)
+- **Anexo III:** [Diagramas y prototipos](anexos/Diagramas)
+- **Anexo IX**: [Entregas Pasadas](anexos/Presentaciones_Pasadas)
