@@ -1,25 +1,34 @@
 /* ============================
    USUARIO ID 0 (para SET DEFAULT en FK)
    ============================ */
+/* Usuario generico */
+SET @password_hash_demo := '$2b$10$bEn5ReIUXGVkHfl5/R8dA.ORiBLqTebLeK.OsNzcyDXa44I4Y.a.S';
+/* password Admin: 1Ab@3456789 */
+SET @password_hash_admin := '$2b$10$d28RpeX3GT1A9i/IRVnMDuoBKZvvu94Tz6pFdCeJqrHpN4E5FkYca';
+/* password Usuario2: aA!!23456789 */
+SET @password_hash_usuario2 := '$2b$10$W3q43jcoP39SHGLYfEdFGe12xGqra4LcgcmDqReG00ux0aKXTQ81e';
+/* password Usuario3: bB!$123456789 */
+SET @password_hash_usuario3 := '$2b$10$jleHaIt4mVixHT1ZztnNVu/tvuMZC563T7I/JEcrvhwTbf/abCRL6';
+
 SET SESSION sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
-INSERT INTO usuario (id_usuario, nombre_usuario, nombre_real, apellido_usuario) VALUES (0, 'usuario0', 'Usuario Cero', 'Reservado');
+INSERT INTO usuario (id_usuario, nombre_usuario, nombre_real, apellido_usuario, email_usuario, password_hash, fecha_registro_usuario, esAdministrador) VALUES (0, 'usuario0', 'Usuario Cero', 'Reservado', 'usuario0@example.com', @password_hash_demo, NOW(), 0);
 SET SESSION sql_mode = '';
 
 /* ============================
    USUARIOS
    ============================ */
-INSERT INTO usuario (nombre_usuario, nombre_real, apellido_usuario, email_usuario, fecha_registro_usuario, esAdministrador) VALUES
-('usuario1', 'Usuario1', 'Apellido Uno', 'usuario1@example.com', NOW(), 2),
-('usuario2', 'Usuario2', 'Apellido Dos', 'usuario2@example.com', NOW(), 0),
-('usuario3', 'Usuario3', 'Apellido Tres', 'usuario3@example.com', NOW(), 0),
-('usuario4', 'Usuario4', 'Apellido Cuatro', 'usuario4@example.com', NOW(), 0),
-('usuario5', 'Usuario5', 'Apellido Cinco', 'usuario5@example.com', NOW(), 0),
-('usuario6', 'Usuario6', 'Apellido Seis', 'usuario6@example.com', NOW(), 0),
-('usuario7', 'Usuario7', 'Apellido Siete', 'usuario7@example.com', NOW(), 0),
-('usuario8', 'Usuario8', 'Apellido Ocho', 'usuario8@example.com', NOW(), 0),
-('usuario9', 'Usuario9', 'Apellido Nueve', 'usuario9@example.com', NOW(), 0),
-('usuario10', 'Usuario10', 'Apellido Diez', 'usuario10@example.com', NOW(), 0),
-('Autor', 'Autor', 'Sin nada', 'autor@example.com', NOW(), 1); -- Usuario que también es autor y moderador (1)
+INSERT INTO usuario (nombre_usuario, nombre_real, apellido_usuario, email_usuario, password_hash, fecha_registro_usuario, esAdministrador) VALUES
+('usuario1', 'Usuario1', 'Apellido Uno', 'usuario1@example.com', @password_hash_admin, NOW(), 2),
+('usuario2', 'Usuario2', 'Apellido Dos', 'usuario2@example.com', @password_hash_usuario2, NOW(), 1),
+('usuario3', 'Usuario3', 'Apellido Tres', 'usuario3@example.com', @password_hash_usuario3, NOW(), 0),
+('usuario4', 'Usuario4', 'Apellido Cuatro', 'usuario4@example.com', @password_hash_demo, NOW(), 0),
+('usuario5', 'Usuario5', 'Apellido Cinco', 'usuario5@example.com', @password_hash_demo, NOW(), 0),
+('usuario6', 'Usuario6', 'Apellido Seis', 'usuario6@example.com', @password_hash_demo, NOW(), 0),
+('usuario7', 'Usuario7', 'Apellido Siete', 'usuario7@example.com', @password_hash_demo, NOW(), 0),
+('usuario8', 'Usuario8', 'Apellido Ocho', 'usuario8@example.com', @password_hash_demo, NOW(), 0),
+('usuario9', 'Usuario9', 'Apellido Nueve', 'usuario9@example.com', @password_hash_demo, NOW(), 0),
+('usuario10', 'Usuario10', 'Apellido Diez', 'usuario10@example.com', @password_hash_demo, NOW(), 0),
+('Autor', 'Autor', 'Sin nada', 'autor@example.com', @password_hash_demo, NOW(), 1); -- Usuario que también es autor y moderador (1)
 
 /* ============================
    CATEGORÍAS DE LISTAS
@@ -303,7 +312,7 @@ INSERT INTO lista_categoria (id_lista, id_categoria) VALUES
 /* ============================
    RELACIÓN C: LISTA-CONTENIDO
    ============================ */
-INSERT INTO lista_contenido VALUES
+INSERT INTO lista_contenido (id_lista, id_libro) VALUES
 (1, 1),  -- Favoritos de Usuario1: LOTR
 (1, 7),  -- Favoritos de Usuario1: La Sombra del Viento
 (1, 5),  -- Favoritos de Usuario1: Frankenstein
@@ -378,48 +387,48 @@ INSERT INTO lista_contenido VALUES
 (11, 13), (11, 14), (11, 15);
 
 /* ============================
-   RELACIÓN D: LIBRO-USUARIO (estado lectura)
+   RELACIÓN D: LIBRO-USUARIO (estado lectura | me gustó)
    ============================ */
 INSERT INTO libro_usuario VALUES
-(1, 1, TRUE),    -- usuario1 leyó LOTR
-(1, 2, FALSE),   -- usuario2 pendiente LOTR
-(2, 1, TRUE),    -- usuario1 leyó Fundación
-(3, 3, FALSE),   -- usuario3 pendiente It
-(4, 4, TRUE),    -- usuario4 leyó Drácula
-(5, 5, TRUE),    -- usuario5 leyó Frankenstein
-(6, 6, FALSE),   -- usuario6 pendiente El gato negro
-(7, 7, TRUE),    -- usuario7 leyó La Sombra del Viento
-(8, 8, TRUE),    -- usuario8 leyó El nombre de la rosa
-(9, 9, FALSE),   -- usuario9 pendiente Los pilares de la Tierra
-(10, 1, TRUE),   -- usuario1 leyó 2001
-(11, 2, TRUE),   -- usuario2 leyó Fahrenheit 451
-(12, 3, FALSE),  -- usuario3 pendiente ¿Sueñan los androides...?
-(13, 4, TRUE),   -- usuario4 leyó Forastero en tierra extraña
-(14, 5, TRUE),   -- usuario5 leyó Dune
-(15, 6, FALSE),  -- usuario6 pendiente Solaris
-(16, 7, TRUE),   -- usuario7 leyó La mano izquierda de la oscuridad
-(17, 8, TRUE),   -- usuario8 leyó El juego de Ender
-(18, 9, FALSE),  -- usuario9 pendiente El problema de los tres cuerpos
-(19, 10, TRUE),  -- usuario10 leyó El cuento de la criada
-(20, 1, TRUE),   -- usuario1 leyó Snow Crash
-(21, 2, FALSE),  -- usuario2 pendiente Parentesco
-(22, 3, TRUE),   -- usuario3 leyó Marte rojo
-(23, 5, FALSE),  -- usuario5 pendiente Un mundo feliz
-(24, 6, TRUE),   -- usuario6 leyó La máquina del tiempo
-(25, 7, TRUE),   -- usuario7 leyó La guerra de los mundos
-(26, 8, FALSE),  -- usuario8 pendiente La guerra interminable
-(27, 9, TRUE),   -- usuario9 leyó El despertar del Leviatán
-(28, 10, TRUE),  -- usuario10 leyó Justicia auxiliar
-(29, 1, FALSE),  -- usuario1 pendiente La historia de tu vida
+(1, 1, TRUE, TRUE),    -- usuario1 leyó LOTR
+(1, 2, FALSE, NULL),   -- usuario2 pendiente LOTR
+(2, 1, TRUE, TRUE),    -- usuario1 leyó Fundación
+(3, 3, FALSE, NULL),   -- usuario3 pendiente It
+(4, 4, TRUE, FALSE),    -- usuario4 leyó Drácula
+(5, 5, TRUE, NULL),    -- usuario5 leyó Frankenstein
+(6, 6, FALSE, NULL),   -- usuario6 pendiente El gato negro
+(7, 7, TRUE, TRUE),    -- usuario7 leyó La Sombra del Viento
+(8, 8, TRUE, TRUE),    -- usuario8 leyó El nombre de la rosa
+(9, 9, FALSE, NULL),   -- usuario9 pendiente Los pilares de la Tierra
+(10, 1, TRUE, TRUE),   -- usuario1 leyó 2001
+(11, 2, TRUE, NULL),   -- usuario2 leyó Fahrenheit 451
+(12, 3, FALSE, NULL),  -- usuario3 pendiente ¿Sueñan los androides...?
+(13, 4, TRUE, TRUE),   -- usuario4 leyó Forastero en tierra extraña
+(14, 5, TRUE, TRUE),   -- usuario5 leyó Dune
+(15, 6, FALSE, NULL),  -- usuario6 pendiente Solaris
+(16, 7, TRUE, TRUE),   -- usuario7 leyó La mano izquierda de la oscuridad
+(17, 8, TRUE, NULL),   -- usuario8 leyó El juego de Ender
+(18, 9, FALSE, NULL),  -- usuario9 pendiente El problema de los tres cuerpos
+(19, 10, TRUE, NULL),  -- usuario10 leyó El cuento de la criada
+(20, 1, TRUE, NULL),   -- usuario1 leyó Snow Crash
+(21, 2, FALSE, NULL),  -- usuario2 pendiente Parentesco
+(22, 3, TRUE, TRUE),   -- usuario3 leyó Marte rojo
+(23, 5, FALSE, NULL),  -- usuario5 pendiente Un mundo feliz
+(24, 6, TRUE, TRUE),   -- usuario6 leyó La máquina del tiempo
+(25, 7, TRUE, TRUE),   -- usuario7 leyó La guerra de los mundos
+(26, 8, FALSE, NULL),  -- usuario8 pendiente La guerra interminable
+(27, 9, TRUE, NULL),   -- usuario9 leyó El despertar del Leviatán
+(28, 10, TRUE, TRUE),  -- usuario10 leyó Justicia auxiliar
+(29, 1, FALSE, NULL),  -- usuario1 pendiente La historia de tu vida
 -- Novedades y coautorías
-(30, 2, TRUE),   -- usuario2 leyó Buenos presagios
-(31, 3, TRUE),   -- usuario3 leyó El misterio de Salem's Lot
-(32, 4, FALSE),  -- usuario4 pendiente El códice de las sombras
-(33, 5, TRUE),   -- usuario5 leyó La conspiración de Marte
-(34, 6, FALSE),  -- usuario6 pendiente El legado de la mansión
-(36, 7, TRUE),   -- usuario7 leyó Placeholder B
-(38, 8, FALSE),  -- usuario8 pendiente Historia inventada
-(39, 9, TRUE);   -- usuario9 leyó El misterio del sótano
+(30, 2, TRUE, TRUE),   -- usuario2 leyó Buenos presagios
+(31, 3, TRUE, TRUE),   -- usuario3 leyó El misterio de Salem's Lot
+(32, 4, FALSE, NULL),  -- usuario4 pendiente El códice de las sombras
+(33, 5, TRUE, TRUE),   -- usuario5 leyó La conspiración de Marte
+(34, 6, FALSE, NULL),  -- usuario6 pendiente El legado de la mansión
+(36, 7, TRUE, TRUE),   -- usuario7 leyó Placeholder B
+(38, 8, FALSE, NULL),  -- usuario8 pendiente Historia inventada
+(39, 9, TRUE, NULL);   -- usuario9 leyó El misterio del sótano
 
 /* ============================
    RELACIÓN E: LIBRO-CRITICA
@@ -471,107 +480,179 @@ INSERT INTO libro_critica VALUES
 /* ============================
    RELACIÓN F: LISTA-COMENTARIO
    ============================ */
-INSERT INTO lista_comentario (id_lista, id_usuario, titulo_comentario, texto_comentario, id_com_respuesta, fecha_comentario) VALUES
+INSERT INTO lista_comentario (id_lista, id_usuario, titulo_comentario, texto_comentario, calificacion_comentario, id_com_respuesta, fecha_comentario) VALUES
 -- Lista 1: Favoritos de Usuario1
-(1, 2, 'Selección destacada', 'Buena selección de libros', NULL, '2024-01-01 10:00:00'),
-(1, 3, 'Fan de LOTR', 'Me encanta LOTR', NULL, '2024-01-01 10:05:00'),
-(1, 5, 'Clásico favorito', 'Siempre vuelvo a Frankenstein\nOccaecat officia ad eu est enim adipisicing minim fugiat magna proident eiusmod nostrud eu consequat. Laborum ex ipsum duis minim laborum. Deserunt eu sint nostrud excepteur laboris nisi consectetur labore veniam. Adipisicing occaecat exercitation nisi ex consectetur labore proident dolore anim id. Est ipsum veniam mollit voluptate sint est tempor sit sint excepteur anim non. Culpa amet fugiat enim ut nisi proident fugiat nisi do dolore consequat ut. Lorem nisi proident commodo qui irure commodo ullamco officia voluptate consequat ex sunt do.\nDeserunt tempor amet Lorem occaecat excepteur eu dolor. Elit ipsum eu aliquip non sint nostrud commodo do consequat exercitation Lorem deserunt occaecat. Do nulla deserunt nisi amet. Pariatur adipisicing sint ad occaecat minim ut exercitation proident. In aliqua ipsum sunt excepteur nisi. Enim occaecat ullamco id tempor non ut consequat amet cillum ea ut excepteur.\nQuis et veniam ex cillum reprehenderit esse laboris eiusmod. Est laboris incididunt nostrud labore ipsum laboris cillum sint labore reprehenderit ipsum irure nulla. Excepteur aliquip veniam Lorem ex laboris duis veniam reprehenderit excepteur esse. Ad commodo occaecat enim consectetur officia. Ex eiusmod veniam sunt ipsum.', NULL, '2024-01-01 10:10:00'),
-(1, 6, 'Dune top', 'Dune es de mis favoritos', NULL, '2024-01-01 10:15:00'),
-(1, 1, 'Agradecimiento', 'Gracias!', 1, '2024-01-01 10:20:00'),
+(1, 2, 'Selección destacada', 'Buena selección de libros', 4, NULL, '2024-01-01 10:00:00'),
+(1, 3, 'Fan de LOTR', 'Me encanta LOTR', 4, NULL, '2024-01-01 10:05:00'),
+(1, 5, 'Clásico favorito', 'Siempre vuelvo a Frankenstein\nOccaecat officia ad eu est enim adipisicing minim fugiat magna proident eiusmod nostrud eu consequat. Laborum ex ipsum duis minim laborum. Deserunt eu sint nostrud excepteur laboris nisi consectetur labore veniam. Adipisicing occaecat exercitation nisi ex consectetur labore proident dolore anim id. Est ipsum veniam mollit voluptate sint est tempor sit sint excepteur anim non. Culpa amet fugiat enim ut nisi proident fugiat nisi do dolore consequat ut. Lorem nisi proident commodo qui irure commodo ullamco officia voluptate consequat ex sunt do.\nDeserunt tempor amet Lorem occaecat excepteur eu dolor. Elit ipsum eu aliquip non sint nostrud commodo do consequat exercitation Lorem deserunt occaecat. Do nulla deserunt nisi amet. Pariatur adipisicing sint ad occaecat minim ut exercitation proident. In aliqua ipsum sunt excepteur nisi. Enim occaecat ullamco id tempor non ut consequat amet cillum ea ut excepteur.\nQuis et veniam ex cillum reprehenderit esse laboris eiusmod. Est laboris incididunt nostrud labore ipsum laboris cillum sint labore reprehenderit ipsum irure nulla. Excepteur aliquip veniam Lorem ex laboris duis veniam reprehenderit excepteur esse. Ad commodo occaecat enim consectetur officia. Ex eiusmod veniam sunt ipsum.', 0, NULL, '2024-01-01 10:10:00'),
+(1, 6, 'Dune top', 'Dune es de mis favoritos', 5, NULL, '2024-01-01 10:15:00'),
+(1, 1, 'Agradecimiento', 'Gracias!', 2, 1, '2024-01-01 10:20:00'),
 -- Lista 2: Lecturas 2024
-(2, 1, 'Clásico de ciencia ficción', 'Fundación es un clásico', NULL, '2024-01-02 10:00:00'),
-(2, 7, 'Solaris pendiente', 'Quiero leer Solaris este año', NULL, '2024-01-02 10:05:00'),
-(2, 8, 'Interés en Buenos presagios', 'Buenos presagios me llama la atención', NULL, '2024-01-02 10:10:00'),
-(2, 9, 'Parentesco en lista', 'Quiero leer Parentesco de Octavia Butler este año', NULL, '2024-01-02 10:15:00'),
-(2, 10, 'Marte rojo recomendado', 'Marte rojo de Kim Stanley Robinson es muy realista', NULL, '2024-01-02 10:20:00'),
+(2, 1, 'Clásico de ciencia ficción', 'Fundación es un clásico', 1, NULL, '2024-01-02 10:00:00'),
+(2, 7, 'Solaris pendiente', 'Quiero leer Solaris este año', 2, NULL, '2024-01-02 10:05:00'),
+(2, 8, 'Interés en Buenos presagios', 'Buenos presagios me llama la atención', 3, NULL, '2024-01-02 10:10:00'),
+(2, 9, 'Parentesco en lista', 'Quiero leer Parentesco de Octavia Butler este año', 4, NULL, '2024-01-02 10:15:00'),
+(2, 10, 'Marte rojo recomendado', 'Marte rojo de Kim Stanley Robinson es muy realista', 5, NULL, '2024-01-02 10:20:00'),
 -- Lista 3: Terror y Misterio
-(3, 4, 'Terror puro', 'It da mucho miedo', NULL, '2024-01-03 10:00:00'),
-(3, 9, 'Salem''s Lot brutal', 'El misterio de Salem''s Lot es brutal', NULL, '2024-01-03 10:05:00'),
-(3, 10, 'Intriga en la mansión', 'El legado de la mansión es muy intrigante', NULL, '2024-01-03 10:10:00'),
+(3, 4, 'Terror puro', 'It da mucho miedo', 5, NULL, '2024-01-03 10:00:00'),
+(3, 9, 'Salem''s Lot brutal', 'El misterio de Salem''s Lot es brutal', 5, NULL, '2024-01-03 10:05:00'),
+(3, 10, 'Intriga en la mansión', 'El legado de la mansión es muy intrigante', 4, NULL, '2024-01-03 10:10:00'),
 -- Lista 4: Ciencia Ficción Top
-(4, 1, 'Dune imprescindible', 'Dune de Frank Herbert es imprescindible', NULL, '2024-01-04 10:00:00'),
-(4, 2, 'Visión futurista', 'Me fascina la visión de futuro de Asimov en Fundación', NULL, '2024-01-04 10:05:00'),
-(4, 3, 'Solaris reflexivo', 'Solaris de Lem me dejó pensando días', NULL, '2024-01-04 10:10:00'),
-(4, 4, 'Tres cuerpos brutal', 'El problema de los tres cuerpos de Cixin Liu es brutal', NULL, '2024-01-04 10:15:00'),
-(4, 5, 'Originalidad Le Guin', 'La mano izquierda de la oscuridad de Le Guin es muy original', NULL, '2024-01-04 10:20:00'),
-(4, 6, 'Ciberpunk puro', 'Snow Crash de Stephenson es puro ciberpunk', NULL, '2024-01-04 10:25:00'),
-(4, 7, 'Distopía inquietante', 'El cuento de la criada de Atwood es inquietante', NULL, '2024-01-04 10:30:00'),
-(4, 8, 'Clásico espacial', '2001 de Arthur C. Clarke es un clásico del género', NULL, '2024-01-04 10:35:00'),
-(4, 6, 'Variedad de ciencia ficción', 'Ciencia ficción para todos los gustos', NULL, '2024-01-04 10:40:00'),
-(4, 8, 'Joya oculta', 'El códice de las sombras es una joya', NULL, '2024-01-04 10:45:00'),
+(4, 1, 'Dune imprescindible', 'Dune de Frank Herbert es imprescindible', 4, NULL, '2024-01-04 10:00:00'),
+(4, 2, 'Visión futurista', 'Me fascina la visión de futuro de Asimov en Fundación', 4, NULL, '2024-01-04 10:05:00'),
+(4, 3, 'Solaris reflexivo', 'Solaris de Lem me dejó pensando días', 3, NULL, '2024-01-04 10:10:00'),
+(4, 4, 'Tres cuerpos brutal', 'El problema de los tres cuerpos de Cixin Liu es brutal', 5, NULL, '2024-01-04 10:15:00'),
+(4, 5, 'Originalidad Le Guin', 'La mano izquierda de la oscuridad de Le Guin es muy original', 4, NULL, '2024-01-04 10:20:00'),
+(4, 6, 'Ciberpunk puro', 'Snow Crash de Stephenson es puro ciberpunk', 3, NULL, '2024-01-04 10:25:00'),
+(4, 7, 'Distopía inquietante', 'El cuento de la criada de Atwood es inquietante', 4, NULL, '2024-01-04 10:30:00'),
+(4, 8, 'Clásico espacial', '2001 de Arthur C. Clarke es un clásico del género', 3, NULL, '2024-01-04 10:35:00'),
+(4, 6, 'Variedad de ciencia ficción', 'Ciencia ficción para todos los gustos', 4, NULL, '2024-01-04 10:40:00'),
+(4, 8, 'Joya oculta', 'El códice de las sombras es una joya', 5, NULL, '2024-01-04 10:45:00'),
 -- Lista 5: Clásicos imprescindibles
-(5, 1, 'Lectura obligada', 'Clásicos que hay que leer sí o sí', NULL, '2024-01-05 10:00:00'),
-(5, 2, 'Variedad de géneros', 'Me encanta la variedad de géneros', NULL, '2024-01-05 10:05:00'),
-(5, 3, 'Imprescindibles distópicos', 'Fahrenheit 451 y Un mundo feliz son imprescindibles', NULL, '2024-01-05 10:10:00'),
+(5, 1, 'Lectura obligada', 'Clásicos que hay que leer sí o sí', 4, NULL, '2024-01-05 10:00:00'),
+(5, 2, 'Variedad de géneros', 'Me encanta la variedad de géneros', 4, NULL, '2024-01-05 10:05:00'),
+(5, 3, 'Imprescindibles distópicos', 'Fahrenheit 451 y Un mundo feliz son imprescindibles', 4, NULL, '2024-01-05 10:10:00'),
 -- Lista 6: Novedades y coautorías
-(6, 4, 'Selección de novedades', 'Interesante selección de novedades', NULL, '2024-01-06 10:00:00'),
-(6, 5, 'Coautoría valorada', 'Me gustan los libros escritos a varias manos', NULL, '2024-01-06 10:05:00'),
-(6, 6, 'Curiosidad literaria', 'Placeholder B es curioso', NULL, '2024-01-06 10:10:00'),
-(6, 7, 'Sorpresa positiva', 'Historia inventada sorprende para bien', NULL, '2024-01-06 10:15:00'),
+(6, 4, 'Selección de novedades', 'Interesante selección de novedades', 3, NULL, '2024-01-06 10:00:00'),
+(6, 5, 'Coautoría valorada', 'Me gustan los libros escritos a varias manos', 4, NULL, '2024-01-06 10:05:00'),
+(6, 6, 'Curiosidad literaria', 'Placeholder B es curioso', 3, NULL, '2024-01-06 10:10:00'),
+(6, 7, 'Sorpresa positiva', 'Historia inventada sorprende para bien', 3, NULL, '2024-01-06 10:15:00'),
 -- Lista 7: Libros para regalar
-(7, 2, 'Regalo perfecto', 'Este año regalaré LOTR', NULL, '2024-01-07 10:00:00'),
-(7, 3, 'Ciencia ficción para todos', 'Fundación nunca falla como regalo', NULL, '2024-01-07 10:05:00'),
+(7, 2, 'Regalo perfecto', 'Este año regalaré LOTR', 5, NULL, '2024-01-07 10:00:00'),
+(7, 3, 'Ciencia ficción para todos', 'Fundación nunca falla como regalo', 5, NULL, '2024-01-07 10:05:00'),
 -- Lista 8: Lecturas de verano
-(8, 4, 'Verano de terror', 'Drácula es ideal para el verano', NULL, '2024-01-08 10:00:00'),
-(8, 5, 'Clásico corto', 'El gato negro se lee en una tarde', NULL, '2024-01-08 10:05:00'),
+(8, 4, 'Verano de terror', 'Drácula es ideal para el verano', 4, NULL, '2024-01-08 10:00:00'),
+(8, 5, 'Clásico corto', 'El gato negro se lee en una tarde', 3, NULL, '2024-01-08 10:05:00'),
 -- Lista 9: Pendientes de leer
-(9, 6, 'Pendiente', 'La Sombra del Viento está en mi lista', NULL, '2024-01-09 10:00:00'),
-(9, 7, 'Recomendación', 'El nombre de la rosa es mi próxima lectura', NULL, '2024-01-09 10:05:00'),
+(9, 6, 'Pendiente', 'La Sombra del Viento está en mi lista', 4, NULL, '2024-01-09 10:00:00'),
+(9, 7, 'Recomendación', 'El nombre de la rosa es mi próxima lectura', 4, NULL, '2024-01-09 10:05:00'),
 -- Lista 10: Libros cortos
-(10, 8, 'Corto pero intenso', 'Fahrenheit 451 es breve y potente', NULL, '2024-01-10 10:00:00'),
-(10, 9, 'Androides', '¿Sueñan los androides...? es corto y genial', NULL, '2024-01-10 10:05:00'),
+(10, 8, 'Corto pero intenso', 'Fahrenheit 451 es breve y potente', 4, NULL, '2024-01-10 10:00:00'),
+(10, 9, 'Androides', '¿Sueñan los androides...? es corto y genial', 4, NULL, '2024-01-10 10:05:00'),
 -- Lista 11: Libros premiados
-(11, 10, 'Premio merecido', 'Forastero en tierra extraña es imprescindible', NULL, '2024-01-11 10:00:00'),
-(11, 1, 'Dune', 'Dune ha ganado muchos premios', NULL, '2024-01-11 10:05:00');
+(11, 10, 'Premio merecido', 'Forastero en tierra extraña es imprescindible', 5, NULL, '2024-01-11 10:00:00'),
+(11, 1, 'Dune', 'Dune ha ganado muchos premios', 5, NULL, '2024-01-11 10:05:00');
 
 /* ============================
    RELACIÓN G: LISTA-USUARIO
    ============================ */
-INSERT INTO lista_usuario (id_lista, id_usuario, me_gusta_lista, calificacion_lista) VALUES
-(1, 2, 1, 5),
-(1, 3, 1, 4),
-(1, 5, 0, 3),
-(1, 6, 0, 2),
-(2, 1, 0, 3),
-(2, 7, 1, 4),
-(2, 8, 1, 5),
-(3, 4, 1, 5),
-(3, 9, 0, 3),
-(3, 10, 1, 4),
-(4, 1, 1, 4),
-(4, 6, 0, 3),
-(4, 8, 0, 2),
-(5, 1, 1, 5),
-(5, 2, 1, 4),
-(5, 3, 1, 5),
-(6, 4, 1, 4),
-(6, 5, 0, 3),
-(6, 6, 0, 2),
-(6, 7, 1, 4),
-(7, 2, 1, 5), (7, 3, 1, 4), (7, 4, 0, 3),
-(8, 5, 1, 5), (8, 6, 1, 4), (8, 7, 0, 3),
-(9, 8, 1, 5), (9, 9, 1, 4), (9, 10, 0, 3),
-(10, 1, 1, 5), (10, 2, 1, 4), (10, 3, 0, 3),
-(11, 4, 1, 5), (11, 5, 1, 4), (11, 6, 0, 3);
+INSERT INTO lista_usuario (id_lista, id_usuario, me_gusta_lista) VALUES
+(1, 2, 1),
+(1, 3, 1),
+(1, 5, 0),
+(1, 6, 0),
+(2, 1, 0),
+(2, 7, 1),
+(2, 8, 1),
+(3, 4, 1),
+(3, 9, 0),
+(3, 10, 1),
+(4, 1, 1),
+(4, 6, 0),
+(4, 8, 0),
+(5, 1, 1),
+(5, 2, 1),
+(5, 3, 1),
+(6, 4, 1),
+(6, 5, 0),
+(6, 6, 0),
+(6, 7, 1),
+(7, 2, 1), (7, 3, 1), (7, 4, 0),
+(8, 5, 1), (8, 6, 1), (8, 7, 0),
+(9, 8, 1), (9, 9, 1), (9, 10, 0),
+(10, 1, 1), (10, 2, 1), (10, 3, 0),
+(11, 4, 1), (11, 5, 1), (11, 6, 0);
+
+
+INSERT INTO lista_comentario (id_lista, id_usuario, titulo_comentario, texto_comentario, id_com_respuesta, fecha_comentario, calificacion_comentario) VALUES
+(1, 2, NULL, '', NULL, '2024-01-01 00:00:00', 5),
+(1, 3, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(1, 5, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(1, 6, NULL, '', NULL, '2024-01-01 00:00:00', 2),
+(2, 1, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(2, 7, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(2, 8, NULL, '', NULL, '2024-01-01 00:00:00', 5),
+(3, 4, NULL, '', NULL, '2024-01-01 00:00:00', 5),
+(3, 9, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(3, 10, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(4, 1, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(4, 6, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(4, 8, NULL, '', NULL, '2024-01-01 00:00:00', 2),
+(5, 1, NULL, '', NULL, '2024-01-01 00:00:00', 5),
+(5, 2, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(5, 3, NULL, '', NULL, '2024-01-01 00:00:00', 5),
+(6, 4, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(6, 5, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(6, 6, NULL, '', NULL, '2024-01-01 00:00:00', 2),
+(6, 7, NULL, '', NULL, '2024-01-01 00:00:00', 4),
+(7, 2, NULL, '', NULL, '2024-01-01 00:00:00', 5), (7, 3, NULL, '', NULL, '2024-01-01 00:00:00', 4), (7, 4, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(8, 5, NULL, '', NULL, '2024-01-01 00:00:00', 5), (8, 6, NULL, '', NULL, '2024-01-01 00:00:00', 4), (8, 7, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(9, 8, NULL, '', NULL, '2024-01-01 00:00:00', 5), (9, 9, NULL, '', NULL, '2024-01-01 00:00:00', 4), (9, 10, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(10, 1, NULL, '', NULL, '2024-01-01 00:00:00', 5), (10, 2, NULL, '', NULL, '2024-01-01 00:00:00', 4), (10, 3, NULL, '', NULL, '2024-01-01 00:00:00', 3),
+(11, 4, NULL, '', NULL, '2024-01-01 00:00:00', 5), (11, 5, NULL, '', NULL, '2024-01-01 00:00:00', 4), (11, 6, NULL, '', NULL, '2024-01-01 00:00:00', 3);
 
 /* ============================
    EVENTOS
    ============================ */
 INSERT INTO evento (id_usuarioCrd, nombre_evento, fecha_evento, hora_evento, direccion_evento, descripcion_evento) VALUES
-(1, 'Club de lectura Enero', '2025-01-15', '18:00:00', 'Calle Mayor 10', 'Debate sobre libros clásicos'),
-(2, 'Reunión Sci-Fi', '2025-02-20', '19:30:00', 'Av. Futuro 22', 'Charla sobre ciencia ficción'),
-(3, 'Noche de Terror', '2025-10-31', '21:00:00', 'Casa del Miedo', 'Lectura de relatos de terror');
+(1, 'Club de lectura Enero', '2026-01-15', '18:00:00', 'Calle Mayor 10', 'Debate sobre libros clásicos'),
+(2, 'Reunión Sci-Fi', '2026-02-20', '19:30:00', 'Av. Futuro 22', 'Charla sobre ciencia ficción'),
+(3, 'Noche de Terror', '2026-06-30', '21:00:00', 'Casa del Miedo', 'Lectura de relatos de terror'),
+-- Evento 4: Debate sobre distopías (pasado)
+(4, 'Debate sobre distopías', '2026-03-10', '18:30:00', 'Biblioteca Central', 'Debate sobre novelas distópicas clásicas y modernas'),
+-- Evento 5: Presentación de libro (pasado)
+(5, 'Presentación de "Historia inventada"', '2026-05-10', '19:00:00', 'Librería El Búho', 'Presentación y firma de la novela "Historia inventada"'),
+-- Evento 6: Maratón de lectura veraniega (futuro)
+(6, 'Maratón de lectura veraniega', '2026-06-15', '17:00:00', 'Parque del Sol', 'Lectura colectiva de libros cortos para el verano'),
+-- Evento 7: Encuentro de autores (futuro)
+(7, 'Encuentro de autores', '2026-07-20', '20:00:00', 'Centro Cultural', 'Charla y networking con autores y lectores'),
+
+-- Pasados adicionales
+(8, 'Debate de Ensayo', '2026-01-25', '18:30:00', 'Aula Magna', 'Debate sobre ensayos literarios y no ficción'),
+(9, 'Cómic y Novela Gráfica', '2026-02-15', '18:00:00', 'Sala Comic', 'Encuentro sobre cómic y novela gráfica'),
+(10, 'Círculo de Poesía', '2026-03-01', '19:00:00', 'Jardín Literario', 'Lectura y creación de poesía'),
+(1, 'Terror Otoñal', '2026-03-10', '20:00:00', 'Casa Encantada', 'Lectura de relatos de terror para otoño'),
+(2, 'Cierre de Invierno', '2026-05-28', '21:00:00', 'Salón Principal', 'Fiesta y balance de lecturas de invierno'),
+-- Futuros adicionales
+(3, 'Encuentro Primavera', '2026-08-01', '18:30:00', 'Sala Primavera', 'Lecturas y actividades de primavera'),
+(4, 'Cómic y Novela Gráfica II', '2026-08-15', '18:00:00', 'Sala Comic', 'Segundo encuentro sobre cómic y novela gráfica'),
+(5, 'Círculo de Poesía II', '2026-09-01', '19:00:00', 'Jardín Literario', 'Nueva edición de poesía'),
+(6, 'Terror Otoñal II', '2026-10-10', '20:00:00', 'Casa Encantada', 'Segunda lectura de relatos de terror para otoño'),
+(7, 'Cierre de Temporada', '2026-12-01', '21:00:00', 'Salón Principal', 'Fiesta y balance de lecturas anuales');
 
 /* ============================
    RELACIÓN H: EVENTO-USUARIO
    ============================ */
 INSERT INTO evento_usuario VALUES
-(1, 1, 5, 1),   -- asiste
-(1, 2, 4, 2),   -- quizás
+-- Evento 1
+(1, 1, true, true),   -- asiste
+(1, 2, NULL, NULL),   -- sin respuesta
 (1, 3, NULL, NULL), -- sin respuesta
-(2, 1, 5, 1),
-(2, 4, 3, 0),   -- no asiste
-(3, 3, 4, 1);
+-- Evento 2
+(2, 1, true, NULL),
+(2, 4, false, NULL),   -- no asiste
+-- Evento 3
+(3, 3, true, NULL),
+-- Evento 4
+(4, 1, true, NULL),(4, 2, true, NULL),(4, 3, true, NULL),(4, 4, NULL, NULL),
+-- Evento 5
+(5, 5, true, NULL),(5, 6, NULL, NULL),(5, 7, NULL, NULL),
+-- Evento 6
+(6, 8, NULL, NULL),(6, 9, true, NULL),(6, 10, true, NULL),
+-- Evento 7
+(7, 1, NULL, NULL),(7, 2, true, NULL),(7, 3, true, NULL),(7, 11, true, NULL),
+-- Pasados adicionales
+(8, 2, true, true), (8, 3, true, false), (8, 4, NULL, NULL),
+(9, 5, true, true), (9, 6, true, false), (9, 7, NULL, NULL),
+(10, 8, NULL, false), (10, 9, true, true), (10, 10, true, false),
+(11, 1, true, true), (11, 2, true, true), (11, 3, true, true),
+(12, 4, NULL, NULL), (12, 5, true, true), (12, 6, true, false),
+-- Futuros adicionales
+(13, 7, true, true), (13, 8, true, NULL), (13, 9, NULL, NULL),
+(14, 2, true, NULL), (14, 3, true, NULL), (14, 4, NULL, NULL),
+(15, 5, true, true), (15, 6, true, NULL), (15, 7, NULL, NULL),
+(16, 8, NULL, NULL), (16, 9, true, true), (16, 10, true, true),
+(17, 1, true, true), (17, 2, true, true), (17, 3, true, NULL);
 
 /* ============================
    RELACIÓN I: EVENTO-COMENTARIO
@@ -597,7 +678,57 @@ INSERT INTO evento_comentario (id_evento, id_usuario, texto_comentario, id_com_r
 (3, 4, 'It da mucho miedo', NULL),
 (3, 8, 'Perfecta elección para Halloween: Frankenstein de Shelley', NULL),
 (3, 9, 'Comentario de usuario9 en evento 3', NULL),
-(3, 10, 'Texto de usuario10 en evento 3', NULL);
+(3, 10, 'Texto de usuario10 en evento 3', NULL),
+-- Evento 4
+(4, 1, 'Un mundo feliz y Fahrenheit 451 son mis favoritos', NULL),
+(4, 2, 'Me gustaría debatir sobre el control social en las distopías', NULL),
+(4, 3, '¿Alguien leyó Parentesco?', NULL),
+(4, 4, 'Las distopías modernas también son interesantes', NULL),
+-- Evento 5
+(5, 5, '¡Gracias por venir a la presentación!', NULL),
+(5, 6, 'Me encantó la firma de libros', NULL),
+(5, 7, 'Espero que haya más eventos así', NULL),
+-- Evento 6
+(6, 8, '¿Qué libros cortos recomiendan para el verano?', NULL),
+(6, 9, 'Me apunto a la maratón', NULL),
+(6, 10, '¡Llevaré bocadillos!', NULL),
+-- Evento 7
+(7, 1, 'Será genial conocer a los autores', NULL),
+(7, 2, '¿Habrá firma de libros?', NULL),
+(7, 3, '¡No falten!', NULL),
+(7, 11, 'Confirmo mi asistencia como autor', NULL),
+-- Pasados adicionales
+(8, 2, 'Los ensayos también son literatura', NULL),
+(8, 3, 'Me interesa la no ficción', NULL),
+(8, 4, '¿Habrá debate abierto?', NULL),
+(9, 5, 'Me encantan los cómics', NULL),
+(9, 6, '¿Alguien recomienda novela gráfica?', NULL),
+(9, 7, 'Voy a llevar mi colección', NULL),
+(10, 8, 'La poesía es vida', NULL),
+(10, 9, '¿Habrá micro abierto?', NULL),
+(10, 10, 'Quiero leer mis versos', NULL),
+(11, 1, 'Terror en otoño, planazo', NULL),
+(11, 2, '¿Se puede ir disfrazado?', NULL),
+(11, 3, 'Llevaré calabazas', NULL),
+(12, 4, 'Gran invierno de lecturas', NULL),
+(12, 5, 'Espero repetir el próximo año', NULL),
+(12, 6, '¡Gracias a todos!', NULL),
+-- Futuros adicionales
+(13, 7, 'Lecturas de primavera', NULL),
+(13, 8, '¿Habrá actividades al aire libre?', NULL),
+(13, 9, 'Llevaré bocadillos', NULL),
+(14, 2, 'Me encantan los cómics', NULL),
+(14, 3, '¿Alguien recomienda novela gráfica?', NULL),
+(14, 4, 'Voy a llevar mi colección', NULL),
+(15, 5, 'La poesía es vida', NULL),
+(15, 6, '¿Habrá micro abierto?', NULL),
+(15, 7, 'Quiero leer mis versos', NULL),
+(16, 8, 'Terror en otoño, planazo', NULL),
+(16, 9, '¿Se puede ir disfrazado?', NULL),
+(16, 10, 'Llevaré calabazas', NULL),
+(17, 1, 'Gran año de lecturas', NULL),
+(17, 2, 'Espero repetir el próximo año', NULL),
+(17, 3, '¡Gracias a todos!', NULL);
 
 /* ============================
    RELACIÓN J: EVENTO-CONTENIDO
@@ -632,4 +763,46 @@ INSERT INTO evento_contenido VALUES
 (2, 27, FALSE), -- La historia de tu vida
 -- Evento 3: Noche de Terror
 (3, 3, TRUE),   -- It libro principal
-(3, 20, FALSE); -- Frankenstein en Noche de Terror
+(3, 20, FALSE), -- Frankenstein en Noche de Terror
+-- Evento 4: Debate sobre distopías
+(4, 11, TRUE),   -- Fahrenheit 451 principal
+(4, 23, FALSE),  -- Un mundo feliz
+(4, 12, FALSE),  -- ¿Sueñan los androides...?
+-- Evento 5: Presentación de "Historia inventada"
+(5, 38, TRUE),   -- Historia inventada principal
+(5, 36, FALSE),  -- Placeholder B
+-- Evento 6: Maratón de lectura veraniega
+(6, 6, TRUE),    -- El gato negro principal
+(6, 36, FALSE),  -- Placeholder B
+(6, 40, FALSE),  -- Libro sin género ni autor
+-- Evento 7: Encuentro de autores
+(7, 32, TRUE),   -- El códice de las sombras principal
+(7, 35, FALSE),  -- Placeholder A
+(7, 1, FALSE),   -- LOTR
+
+-- Pasados adicionales
+(8, 9, TRUE), (8, 8, FALSE), (8, 40, FALSE),
+(9, 12, TRUE), (9, 20, FALSE), (9, 28, FALSE),
+(10, 30, TRUE), (10, 32, FALSE), (10, 35, FALSE),
+(11, 3, TRUE), (11, 4, FALSE), (11, 37, FALSE),
+(12, 1, TRUE), (12, 14, FALSE), (12, 23, FALSE),
+-- Futuros adicionales
+(13, 7, TRUE), (13, 8, FALSE), (13, 31, FALSE),
+(14, 12, TRUE), (14, 20, FALSE), (14, 28, FALSE),
+(15, 30, TRUE), (15, 32, FALSE), (15, 35, FALSE),
+(16, 3, TRUE), (16, 4, FALSE), (16, 37, FALSE),
+(17, 1, TRUE), (17, 14, FALSE), (17, 23, FALSE);
+
+/* ============================
+   SESIONES
+   ============================ */
+SET @ahora := NOW();
+INSERT INTO sesiones (token, id_usuario, expira, fecha_inicio_sesion) VALUES
+('seed-session-expirada-1', 7, DATE_SUB(@ahora, INTERVAL 10 DAY), DATE_SUB(DATE_SUB(@ahora, INTERVAL 10 DAY), INTERVAL 30 DAY)),
+('seed-session-expirada-2', 2, DATE_SUB(@ahora, INTERVAL 2 DAY), DATE_SUB(DATE_SUB(@ahora, INTERVAL 2 DAY), INTERVAL 30 DAY)),
+('seed-session-5m-1', 3, DATE_ADD(@ahora, INTERVAL 5 MINUTE), DATE_SUB(DATE_ADD(@ahora, INTERVAL 5 MINUTE), INTERVAL 30 DAY)),
+('seed-session-5m-2', 4, DATE_ADD(@ahora, INTERVAL 5 MINUTE), DATE_SUB(DATE_ADD(@ahora, INTERVAL 5 MINUTE), INTERVAL 30 DAY)),
+('seed-session-10m-1', 5, DATE_ADD(@ahora, INTERVAL 10 MINUTE), DATE_SUB(DATE_ADD(@ahora, INTERVAL 10 MINUTE), INTERVAL 30 DAY)),
+('seed-session-10m-2', 6, DATE_ADD(@ahora, INTERVAL 10 MINUTE), DATE_SUB(DATE_ADD(@ahora, INTERVAL 10 MINUTE), INTERVAL 30 DAY)),
+('seed-session-semana-1', 1, DATE_ADD(@ahora, INTERVAL 7 DAY), DATE_SUB(DATE_ADD(@ahora, INTERVAL 7 DAY), INTERVAL 30 DAY)),
+('seed-session-semana-2', 8, DATE_ADD(@ahora, INTERVAL 8 DAY), DATE_SUB(DATE_ADD(@ahora, INTERVAL 8 DAY), INTERVAL 30 DAY));

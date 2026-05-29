@@ -9,6 +9,7 @@ CREATE TABLE usuario (
 	id_usuario 		INT PRIMARY KEY AUTO_INCREMENT,
     nombre_usuario 	VARCHAR(50) UNIQUE NOT NULL,
     email_usuario 	VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     nombre_real 	VARCHAR(50) NOT NULL,
     apellido_usuario VARCHAR(50),
     fecha_registro_usuario DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
@@ -73,7 +74,7 @@ CREATE TABLE lista (
 
 CREATE TABLE evento (
 	id_evento 			INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuarioCrd 			INT NOT NULL,
+    id_usuarioCrd 		INT,
     nombre_evento 		VARCHAR(100) NOT NULL,
     fecha_evento 		DATE NOT NULL, -- YYYY-MM-DD
     hora_evento 		TIME, 		   -- HH:MM:SS
@@ -84,7 +85,7 @@ CREATE TABLE evento (
 		FOREIGN KEY (id_usuarioCrd)
         REFERENCES usuario(id_usuario)
         ON UPDATE CASCADE
-        ON DELETE RESTRICT
+        ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 
@@ -166,6 +167,7 @@ CREATE TABLE libro_autor (
 CREATE TABLE lista_contenido (
     id_lista INT NOT NULL,
     id_libro INT NOT NULL,
+    posicion INT, -- Posición del libro dentro de la lista (opcional, para ordenar)
 
     PRIMARY KEY (id_lista, id_libro),
 
@@ -186,7 +188,8 @@ CREATE TABLE lista_contenido (
 CREATE TABLE libro_usuario (
     id_libro   		INT NOT NULL,
     id_usuario 		INT NOT NULL,
-    estado_lectura  BOOL DEFAULT FALSE NOT NULL, -- FALSE/0: Pendiente  TRUE/1: Leido
+    estado_lectura  BOOL DEFAULT NULL, -- FALSE/0: Pendiente  TRUE/1: Leido
+    me_gusta_libro 	BOOL DEFAULT NULL, -- 0:No  1:Sí
 
     PRIMARY KEY (id_libro, id_usuario),
 
@@ -234,6 +237,7 @@ CREATE TABLE lista_comentario (
     id_usuario          INT NOT NULL,
     titulo_comentario   VARCHAR(100),
     texto_comentario    TEXT NOT NULL,
+    calificacion_comentario TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_comentario BETWEEN 0 AND 5),
     id_com_respuesta    INT DEFAULT NULL,
     fecha_comentario	  DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
 
@@ -261,8 +265,7 @@ CREATE TABLE lista_comentario (
 CREATE TABLE lista_usuario (
     id_lista        	INT NOT NULL,
     id_usuario      	INT NOT NULL,
-    me_gusta_lista   	TINYINT UNSIGNED DEFAULT NULL CHECK (me_gusta_lista IN (0,1)), -- 0:No  1:Sí
-    calificacion_lista	TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_lista BETWEEN 0 AND 5),
+    me_gusta_lista   	BOOL DEFAULT NULL, -- 0:No  1:Sí
 
     PRIMARY KEY (id_lista, id_usuario),
 
@@ -283,8 +286,8 @@ CREATE TABLE lista_usuario (
 CREATE TABLE evento_usuario (
 	id_evento       	INT NOT NULL,
     id_usuario      	INT NOT NULL,
-    calificacion_evento	TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_evento BETWEEN 0 AND 5),
-    asiste          	TINYINT UNSIGNED DEFAULT NULL CHECK (asiste IN (0,1,2)), -- 0:No  1:Sí  2:Quizas
+    asiste          	BOOL DEFAULT NULL, -- 0:No  1:Sí
+    me_gusta_evento 	BOOL DEFAULT NULL, -- 0:No  1:Sí
 
     PRIMARY KEY (id_evento, id_usuario),
 
@@ -307,6 +310,7 @@ CREATE TABLE evento_comentario (
     id_evento           INT NOT NULL,
     id_usuario          INT NOT NULL,
     texto_comentario    TEXT NOT NULL,
+    calificacion_comentario TINYINT UNSIGNED DEFAULT NULL CHECK (calificacion_comentario BETWEEN 0 AND 5),
     id_com_respuesta    INT DEFAULT NULL,
     fecha_comentario    DATETIME NOT NULL DEFAULT now(), -- YYYY-MM-DD:HH:MM:SS
 
@@ -348,4 +352,19 @@ CREATE TABLE evento_contenido (
         REFERENCES libro(id_libro)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- Tabla I: Sesiones
+CREATE TABLE sesiones (
+  token VARCHAR(255) PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  expira DATETIME NOT NULL,
+  fecha_inicio_sesion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  INDEX (id_usuario),
+  CONSTRAINT fk_sesiones_idUsuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES usuario(id_usuario)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;

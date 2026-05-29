@@ -354,10 +354,15 @@ Cuenta de Administrador
 - usuario: `usuario1@example.com`
 - contraseña: `1Ab@3456789`
 
-Cuenta de otro Usuario:
+Cuenta de usuario Moderador:
 
 - usuario: `usuario2@example.com`
 - contraseña: `aA!!23456789`
+
+Cuenta de usuario Registrado Normal:
+
+- usuario: `bB!$123456789`
+- contraseña: `bB!$123456789`
 
 Tokens de sesiones para pruebas del back/Postman
 
