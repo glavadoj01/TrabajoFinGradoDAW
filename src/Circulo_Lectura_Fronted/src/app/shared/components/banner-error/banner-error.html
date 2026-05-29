@@ -1,0 +1,14 @@
+<div class="mx-auto max-w-7xl">
+    <section class="rounded-xl bg-white/5 p-6">
+        <h2 class="text-white text-2xl font-bold">{{ elemento() }} no encontrado</h2>
+        @if(!mensaje()) {
+        <p class="text-gray-400 mt-2">
+            El {{ elemento() }} no existe o no esta disponible ahora mismo.
+        </p>
+        }@else {
+        <p class="text-gray-400 mt-2">
+            {{ mensaje() }}
+        </p>
+        }
+    </section>
+</div>

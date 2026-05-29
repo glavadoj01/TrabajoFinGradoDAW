@@ -1,0 +1,37 @@
+<div class="flex items-center justify-center h-full m-auto my-40">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <fieldset
+      class="flex flex-col gap-8 justify-center align-middle fieldset bg-background-element border border-primary hover:ring-2 hover:ring-primary transition-all duration-300 transform hover:-translate-y-1 rounded-box w-xs p-4">
+      <legend class="fieldset-legend">Login</legend>
+
+      @if (error()) {
+      <app-banner-error [elemento]="'Login'" [mensaje]="error()"></app-banner-error>
+      }
+
+      <div class="flex flex-col gap-2 items-center justify-center">
+        <label class="label self-start" for="auth-email">Email</label>
+        <input id="auth-email" type="email" class="input" placeholder="Email" formControlName="email" />
+      </div>
+      <div class="flex flex-col gap-2 items-center justify-center">
+        <label class="label self-start" for="auth-password">Password</label>
+        <input id="auth-password" type="password" class="input" placeholder="Password" formControlName="password" />
+      </div>
+      <button type="submit" [disabled]="cargando()"
+        class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 
+                    bg-btn-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] 
+                    hover:bg-btn-primary-hover focus-visible:outline-1 focus-visible:ring-2 
+                    focus-visible:ring-btn-primary-focus active:bg-btn-primary-pressed transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+        {{ cargando() ? 'Entrando...' : 'Login' }}
+      </button>
+    </fieldset>
+    <p class="text-center text-sm text-gray-600 mt-16 mb-4">
+      ¿No tienes una cuenta?
+    </p>
+    <a routerLink="/auth/registro" class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 
+                              bg-btn-secondary text-secondary text-sm font-bold leading-normal tracking-[0.015em]
+                              hover:bg-btn-secondary-hover focus-visible:outline-none focus-visible:ring-2 
+                              focus-visible:ring-btn-secondary-focus active:bg-btn-secondary-pressed transition-all">
+      <span class="truncate">Registrarse</span>
+    </a>
+  </form>
+</div>

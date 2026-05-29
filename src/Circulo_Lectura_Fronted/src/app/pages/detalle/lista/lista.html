@@ -1,0 +1,128 @@
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Aside Info Lista -->
+    <div class="w-full lg:w-1/4 xl:w-1/5">
+      <aside class="w-fit h-fit border border-accent flex flex-col gap-4 bg-gray-900/40 rounded-xl p-6">
+        <h2 class="text-xl font-bold mb-2">{{detalle?.lista?.nombre_lista}}</h2>
+        <p class="text-gray-400">{{detalle?.lista?.descripcion_lista}}</p>
+        <div class="mt-4">
+          <div class="mb-2">Cantidad de libros: <b>{{detalle?.libros?.length || 0}}</b></div>
+          <div class="mb-2">Seguidores: <b>{{detalle?.lista?.totalSeguidores || 0}}</b></div>
+          <div class="mb-2">Me gusta: <b>{{detalle?.lista?.totalMeGusta || 0}}</b></div>
+          <div class="mb-2">Creador: <b>{{detalle?.lista?.nombreCreador}}</b></div>
+          <!-- Aquí podrías mostrar valoración media si la tienes en la lista -->
+        </div>
+
+        @if (puedeEditarLista()) {
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-accent px-4 py-2 text-sm font-semibold text-accent"
+            (click)="iniciarEdicion()">Editar</button>
+          <button type="button"
+            class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 disabled:opacity-60"
+            [disabled]="borrando" (click)="borrarLista()">
+            {{ borrando ? 'Eliminando...' : 'Eliminar lista' }}
+          </button>
+        </div>
+        }
+      </aside>
+    </div>
+    <div class="w-full lg:w-3/4 xl:w-4/5">
+      @if (cargando) {
+      <app-banner-cargando [elemento]="'lista'"></app-banner-cargando>
+      } @else if (!listaEncontrada) {
+      <app-banner-error [elemento]="'lista'"></app-banner-error>
+      } @else {
+      <!-- Detalle de la lista -->
+      <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-4 mb-6">
+        <div class="flex min-w-72 flex-col gap-1">
+          <h1 class="text-2xl font-bold mb-4">{{detalle?.lista?.nombre_lista}}</h1>
+        </div>
+        <div class="flex gap-4">
+          @if (siguiendoLista) {
+          <button type="button"
+            class="px-4 py-2 rounded-lg border border-accent text-sm font-semibold transition disabled:opacity-50"
+            [class.bg-accent]="meGustaLista" [class.text-black]="meGustaLista" [class.bg-transparent]="!meGustaLista"
+            [class.text-accent]="!meGustaLista" [disabled]="accionMeGustaCargando" (click)="toggleMeGustaLista()">
+            {{ accionMeGustaCargando ? 'Actualizando...' : (meGustaLista ? 'Quitar me gusta' : 'Me gusta') }}
+          </button>
+          }
+          <button type="button"
+            class="px-4 py-2 rounded-lg border border-accent text-sm font-semibold transition disabled:opacity-50"
+            [class.bg-accent]="siguiendoLista" [class.text-black]="siguiendoLista"
+            [class.bg-transparent]="!siguiendoLista" [class.text-accent]="!siguiendoLista"
+            [disabled]="accionSeguimientoCargando" (click)="toggleSeguirLista()">
+            {{ accionSeguimientoCargando ? 'Actualizando...' : (siguiendoLista ? 'Dejar de seguir' : 'Seguir lista') }}
+          </button>
+        </div>
+      </div>
+
+      @if (puedeEditarLista() && editando) {
+      <section class="mb-6 rounded-2xl border border-accent/40 bg-gray-900/40 p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-lg font-semibold text-accent">Editar lista</h2>
+          <div class="flex gap-2">
+            <button type="button"
+              class="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200"
+              (click)="cancelarEdicion()">Cancelar</button>
+            <button type="submit" form="lista-edit-form"
+              class="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black disabled:opacity-60"
+              [disabled]="guardandoCambios">
+              {{ guardandoCambios ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </div>
+        <form id="lista-edit-form" class="grid gap-4" [formGroup]="listaForm" (ngSubmit)="guardarCambios()">
+          <label class="flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Nombre</span>
+            <input class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="nombre_lista" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Descripción</span>
+            <textarea rows="4" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="descripcion_lista"></textarea>
+          </label>
+        </form>
+      </section>
+      }
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-6">
+        @for (libro of detalle?.libros ?? []; track libro.id_libro) {
+        <div class="flex flex-col gap-2">
+          <app-libro-card [libro]="libro"></app-libro-card>
+          @if (puedeEditarLista()) {
+          <button type="button" class="rounded-lg border border-red-500 px-3 py-2 text-xs font-semibold text-red-300"
+            (click)="quitarLibroDeLista(libro.id_libro)">Eliminar libro de la lista</button>
+          }
+        </div>
+        }
+      </div>
+      <!-- Resumen Notas -->
+      <app-resumen-puntuaciones class="mx-auto w-fit" [nombreElemento]="'valoraciones'"
+        [puntuacionPromedio]="detalle?.lista?.puntuacionPromedio ?? null"
+        [totalElementos]="detalle?.lista?.totalCalificaciones ?? 0"
+        [distribucion]="detalle?.lista?.distribucion ?? []"></app-resumen-puntuaciones>
+      <!-- Comentarios -->
+      <section class="border-t border-white/10 pt-10 flex flex-col gap-8">
+        <app-comentario-nuevo [origen]="'lista'" [idOrigen]="detalle?.lista?.id_lista ?? -1"
+          (comentarioCreado)="onComentarioCreado()" />
+        <h2 class="text-xl font-bold mb-4">Comentarios</h2>
+        @if (errorComentarios) {
+        <output aria-live="polite" class="rounded-lg border border-amber-700 bg-amber-950/30 px-4 py-3 text-amber-700">
+          No se pudieron cargar los comentarios en este momento. Por favor, inténtalo de nuevo más tarde.
+        </output>
+        } @else if ((detalle?.comentarios?.length ?? 0) === 0) {
+        <output aria-live="polite" class="text-gray-400 text-sm">
+          Todavía no hay comentarios para esta lista.
+        </output>
+        } @else {
+        @for (comentario of detalle?.comentarios ?? []; track comentario.id_listaComentario) {
+        <app-comentario-existente [critica]="comentario" [elemento]="'lista'" (eventoFin)="recargarComentarios()"
+          [elementoId]="detalle?.lista?.id_lista ?? -1"></app-comentario-existente>
+        }
+        }
+      </section>
+      }
+    </div>
+  </div>
+</main>

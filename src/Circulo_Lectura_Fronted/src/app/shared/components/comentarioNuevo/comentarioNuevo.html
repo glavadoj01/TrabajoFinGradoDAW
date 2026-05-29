@@ -1,0 +1,64 @@
+<section class="flex flex-col gap-4">
+  <h3 class="text-black dark:text-white text-xl font-bold">{{ tituloFormulario }}</h3>
+
+  <form class="flex flex-col gap-4 p-6 bg-gray-100 dark:bg-white/5 rounded-xl" [formGroup]="formComentario"
+    (ngSubmit)="publicarComentario()">
+    <div class="flex items-center gap-4">
+      <img imgDefault="/anonUser.png" class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+        [attr.alt]="'Avatar of user ' + usuarioNombre()" [src]="imagenUser()" />
+      <div class="flex flex-col gap-1">
+        <p class="text-black dark:text-white font-semibold">{{ usuarioNombre() || "Anónimo" }}</p>
+        <div class="flex gap-1 text-gray-400 dark:text-gray-500">
+          @for (estrella of estrellas; track estrella) {
+          <button type="button" class="cursor-pointer" [attr.aria-label]="'Puntuar con ' + estrella + ' estrellas'"
+            (click)="seleccionarCalificacion(estrella)">
+            <span class="material-symbols-outlined text-xl! transition-colors"
+              [class.text-yellow-400]="esEstrellaActiva(estrella)" [class.text-gray-400]="!esEstrellaActiva(estrella)">
+              {{ esEstrellaActiva(estrella) ? 'star' : 'star_outline' }}
+            </span>
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (mostrarCampoTitulo()) {
+    <label class="flex flex-col gap-2">
+      <span class="text-sm text-gray-700 dark:text-gray-300">Título (opcional)</span>
+      <input type="text" formControlName="titulo_comentario"
+        class="w-full rounded-lg text-black dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-gray-300 dark:border-white/20 bg-gray-200 dark:bg-white/5 placeholder:text-gray-500 text-sm p-3"
+        placeholder="Escribe un título breve" />
+    </label>
+    }
+
+    <label class="flex flex-col gap-2">
+      <span class="text-sm text-gray-700 dark:text-gray-300">Comentario</span>
+      <textarea aria-label="Escribe tu comentario" formControlName="texto_comentario"
+        class="form-textarea w-full resize-y rounded-lg text-black dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border-gray-300 dark:border-white/20 bg-gray-200 dark:bg-white/5 min-h-28 placeholder:text-gray-500 text-base font-normal leading-normal p-4"
+        [placeholder]="placeholderTexto"></textarea>
+    </label>
+
+    @if (mensajeError()) {
+    <output aria-live="polite" class="rounded-lg border border-red-700 bg-red-950/30 px-4 py-3 text-red-700">
+      {{ mensajeError() }}
+    </output>
+    }
+
+    @if (mensajeOk()) {
+    <output aria-live="polite" class="rounded-lg border border-emerald-700 bg-emerald-950/30 px-4 py-3 text-emerald-700">
+      {{ mensajeOk() }}
+    </output>
+    }
+
+    <div class="flex justify-end gap-3 items-center">
+      @if (!estaLogueado()) {
+      <a routerLink="/auth/login" class="text-sm text-accent underline">Inicia sesión para comentar</a>
+      }
+      <button type="submit" aria-label="Publicar comentario"
+        class="flex min-w-21 max-w-120 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors disabled:opacity-60"
+        [disabled]="enviando()">
+        <span class="truncate">{{ enviando() ? 'Publicando...' : 'Publicar' }}</span>
+      </button>
+    </div>
+  </form>
+</section>

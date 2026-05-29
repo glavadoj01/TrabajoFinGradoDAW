@@ -1,0 +1,181 @@
+<main class="flex-1 px-4 sm:px-10 md:px-20 lg:px-40 py-10">
+  @if (cargando) {
+  <app-banner-cargando [elemento]="'libro'"></app-banner-cargando>
+
+  } @else if (!libroEncontrado) {
+  <app-banner-error [elemento]="'libro'"></app-banner-error>
+
+  } @else {
+  <div class="mx-auto flex max-w-7xl flex-col gap-12">
+    <!-- Book Details Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 h-fit">
+      <!-- Left Column (Visual) -->
+      <app-portada-detalle-libro [tituloLibro]="libro?.titulo_libro || 'Titulo desconocido'"
+        [idLibro]="libro?.id_libro || 0"></app-portada-detalle-libro>
+
+      <!-- Right Column (Informative) -->
+      <div class="flex flex-col gap-6 md:col-span-2">
+        <!-- CabeceraDetalle -->
+        <div class="flex min-w-72 flex-col gap-10">
+          <h1 #tituloLibro
+            class="text-white text-2xl lg:text-4xl font-black leading-tight tracking-[-0.033em] max-h-24">
+            {{libro?.titulo_libro || "Titulo no encontrado"}}</h1>
+          <p #autorLibro class="text-gray-400 text-lg font-normal leading-normal">
+            {{ libro?.autores?.length ? libro?.autores?.map(a => `${a.nombre_autor}
+            ${a.apellido_autor}`.trim())?.join('; ') : 'Autor
+            Desconocido / Anonimo' }}</p>
+        </div>
+        <!-- Calificación y total Reseñas -->
+        <div class="flex flex-wrap items-center gap-2 text-gray-500">
+          <span class="flex items-center gap-1 text-yellow-500">
+            <span class="material-symbols-outlined text-base">star</span>
+            <span class="font-bold text-sm">{{ libro?.calificacionPromedio != null ?
+              (libro?.calificacionPromedio | number:'1.1-2') : 'N/A' }}</span>
+          </span>
+          <span>·</span>
+          <span class="text-sm">{{
+            (libro?.totalResenas ?? 0) === 0 ? ' Sin Reseñas'
+            : (libro?.totalResenas ?? 0) === 1 ? ' 1 Reseña'
+            : (libro?.totalResenas ?? 0) + ' Reseñas'
+            }}
+          </span>
+        </div>
+        <!-- Descripción -->
+        <div class="text-gray-300 text-base leading-relaxed space-y-4">
+          @if (tieneSinopsisValida()) {
+          <p>{{ libro?.sinopsis }}</p>
+          } @else {
+          <p class="italic text-gray-400">
+            Sinopsis no disponible para este libro
+          </p>
+          }
+        </div>
+
+        @if (puedeEditarLibro()) {
+        <section class="rounded-2xl border border-accent/40 bg-gray-900/40 p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold text-accent">Edición del libro</h2>
+            <div class="flex gap-2">
+              @if (!editando) {
+              <button type="button" class="rounded-lg border border-accent px-4 py-2 text-sm font-semibold text-accent"
+                (click)="iniciarEdicion()">Editar</button>
+              } @else {
+              <button type="button"
+                class="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200"
+                (click)="cancelarEdicion()">Cancelar</button>
+              <button type="submit" form="libro-edit-form"
+                class="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black disabled:opacity-60"
+                [disabled]="guardandoCambios">
+                {{ guardandoCambios ? 'Guardando...' : 'Guardar cambios' }}
+              </button>
+              <button type="button"
+                class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 disabled:opacity-60"
+                [disabled]="borrando" (click)="borrarLibro()">
+                {{ borrando ? 'Eliminando...' : 'Eliminar libro' }}
+              </button>
+              }
+            </div>
+          </div>
+
+          @if (editando) {
+          <form id="libro-edit-form" class="grid gap-4 md:grid-cols-2" [formGroup]="libroForm"
+            (ngSubmit)="guardarCambios()">
+            <label class="flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Título</span>
+              <input class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+                formControlName="titulo_libro" />
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="text-sm text-gray-300">ISBN</span>
+              <input class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+                formControlName="codigo_isbn" />
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Páginas</span>
+              <input type="number" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+                formControlName="paginas" />
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Año publicación</span>
+              <input type="number" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+                formControlName="year_publicacion" />
+            </label>
+            <label class="flex flex-col gap-2 max-h-48 overflow-y-hidden">
+              <span class="text-sm text-gray-300">Géneros</span>
+              <select multiple
+                class="rounded-lg border border-white/10 bg-background-element px-3 py-2 text-white max-h-36 overflow-y-scroll"
+                formControlName="generos">
+                @for (g of generos(); track g) {
+                <option [value]="g.id_genero">{{ g.nombre_genero }}</option>
+                }
+              </select>
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Idioma original</span>
+              <select
+                class="rounded-lg border border-white/10 bg-background-element px-3 py-2 text-white max-h-36 overflow-y-scroll"
+                formControlName="id_idioma_original">
+                <option [value]="null">--</option>
+                @for (i of idiomas(); track i) {
+                <option [value]="i.id_idioma">{{ i.nombre_idioma }}</option>
+                }
+              </select>
+            </label>
+            <label class="md:col-span-2 flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Sinopsis</span>
+              <textarea rows="5" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+                formControlName="sinopsis"></textarea>
+            </label>
+            <label class="md:col-span-2 flex flex-col gap-2">
+              <span class="text-sm text-gray-300">Autores</span>
+              <app-autor-selector #autorSelector formControlName="autores" [allowCreate]="isAdmin"
+                (selectionChange)="onAutoresSelectorChange($event)"></app-autor-selector>
+            </label>
+          </form>
+          }
+        </section>
+        }
+
+        @if (libro) {
+        <app-libro-metadatos [libro]="libro" [editorial]="'DAW Books'"></app-libro-metadatos>
+        }
+      </div>
+    </section>
+
+
+    <!-- Reviews and Ratings Section -->
+    <section class="border-t border-white/10 pt-10 flex flex-col gap-8">
+      <!-- Rating Summary -->
+      <app-resumen-puntuaciones class="mx-auto w-fit" [puntuacionPromedio]="libro?.calificacionPromedio"
+        [totalElementos]="libro?.totalResenas" [nombreElemento]="'Reseñas'"
+        [distribucion]="notasIndividuales"></app-resumen-puntuaciones>
+
+      <!-- Write a Review Form -->
+      @if (puedeCrearCritica || !estaLogueado) {
+      <app-comentario-nuevo [origen]="'libro'" [idOrigen]="libro?.id_libro ?? -1"
+        (comentarioCreado)="onComentarioCreado()"></app-comentario-nuevo>
+      } @else if (estaLogueado) {
+      <output aria-live="polite" class="rounded-lg border border-sky-700 bg-sky-950/30 px-4 py-3 text-sky-700">
+        Ya has publicado una crítica para este libro.
+      </output>
+      }
+      <!-- Existing Reviews List -->
+      <div class="flex flex-col gap-6">
+        @if (errorCriticas) {
+        <output aria-live="polite" class="rounded-lg border border-amber-700 bg-amber-950/30 px-4 py-3 text-amber-700">
+          No se pudieron cargar las críticas en este momento. Por favor, inténtalo de nuevo más tarde.
+        </output>
+        } @else if (criticas.length === 0) {
+        <output aria-live="polite" class="text-gray-400 text-sm">
+          Todavía no hay críticas para este libro. </output>
+        } @else {
+        @for (critica of criticas; track critica.id_usuario) {
+        <app-comentario-existente [critica]="critica" [elemento]="'libro'" (eventoFin)="recargar()"
+          [elementoId]="libro?.id_libro ?? -1"></app-comentario-existente>
+        }
+        }
+      </div>
+    </section>
+  </div>
+  }
+</main>

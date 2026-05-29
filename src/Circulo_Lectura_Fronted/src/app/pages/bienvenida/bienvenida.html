@@ -1,0 +1,121 @@
+<main class="layout-content-container flex flex-col w-full max-w-6xl flex-1 px-4 md:px-0 mx-auto">
+  <!-- Sección Mensaje de Bienvenida -->
+  <section class="container">
+    <div class="py-16 md:py-24">
+      <div
+        class="flex min-h-120 flex-col gap-8 bg-cover bg-center bg-no-repeat @[480px]:rounded-xl items-center justify-center p-4 text-center"
+        data-alt="A cozy library with warm lighting and shelves full of books"
+        style='background-image: linear-gradient(rgba(18, 18, 18, 0.7) 0%, rgba(18, 18, 18, 0.9) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBd5SYn9eXRLiKwl8IKNEuo1xk9Xv8czo4Jw0AMmVcdMSoWHIqtRXjS1geORuCJcbBCP-E5oz3n_GbOse-6PpnIpD8XUPAQBt3FgG4AsTTvZJv6YeQOjm13WI9S97J03wrHcpJz5axOBarsv7J6ShDjvtEknkc8cD3HkiyHgTZLPDDRFZ-zWPAzMuQA_hRS94CsU-rr-YqnoT3MqsHKq1UoSF7R4LGjqe4CEkREUtJOp9Y3uy43zB6vWHYQgwbbq62ySM4yRrUFOw");'>
+        <div class="flex flex-col gap-2">
+          <h1
+            class="font-serif text-white text-4xl font-bold leading-tight tracking-tight @[480px]:text-6xl @[480px]:font-bold @[480px]:leading-tight">
+            Bienvenido a nuestro Círculo de Lectura
+          </h1>
+          <h2
+            class="text-text-light text-base font-normal leading-normal @[480px]:text-lg @[480px]:font-normal @[480px]:leading-normal max-w-2xl mx-auto">
+            Un espacio para descubrir, compartir y conectar a través de los libros.
+          </h2>
+        </div>
+        <div class="w-full max-w-2xl px-4">
+          <div class="relative flex w-full items-center">
+            <app-search-bar class="w-full"></app-search-bar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección Novedades y próximos eventos -->
+  <section class="container flex flex-col justify-center">
+    <h2
+      class="text-white text-[22px] text-center font-serif font-bold leading-tight tracking-[-0.015em] px-4 pb-4 pt-5 md:text-3xl">
+      Mejor Valorados</h2>
+    <div class="flex justify-center w-full px-4 py-2 h-fit">
+      <div class="flex gap-4">
+        @if (cargando()) {
+        <app-banner-cargando [elemento]="'Catálogo de libros'"></app-banner-cargando>
+        } @else if (errorCarga()) {
+        <app-banner-error [elemento]="'Catálogo de libros'"></app-banner-error>
+        } @else{
+        @if (librosPagina().length === 0) {
+        <section class="rounded-xl bg-white/5 p-6">
+          <h2 class="text-white/60 text-2xl font-bold">Sin libros disponibles</h2>
+          <p class="text-gray-400 mt-2">No hay resultados para mostrar.</p>
+        </section>
+        } @else {
+        <!-- Contenedor CatalogoLibros -->
+        <div class="flex flex-wrap justify-between gap-4 w-full h-fit">
+          @for (libro of librosPagina(); track libro.id_libro) {
+          <div class="w-64 shrink-0">
+            <app-libro-card [libro]="libro"></app-libro-card>
+          </div>
+          }
+        </div>
+        }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección Sobre Nosotros -->
+  <section class="flex flex-col gap-10 px-4 py-16 @container">
+    <div class="flex flex-col gap-4">
+      <h1 class="font-serif text-white text-[32px] font-bold leading-tight @[480px]:text-4xl max-w-180">
+        Sobre Nosotros
+      </h1>
+      <p class="text-text-light text-base font-normal leading-normal max-w-180">
+        Nuestra misión es crear una comunidad vibrante donde los amantes de la lectura puedan
+        descubrir nuevas obras, compartir perspectivas y participar en eventos enriquecedores.
+      </p>
+    </div>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4 p-0">
+      <div class="flex flex-1 gap-3 rounded-lg border border-surface-dark bg-surface-dark p-4 flex-col">
+        <div class="text-primary">
+          <span class="material-symbols-outlined" style="font-size: 32px;">auto_stories</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-white text-lg font-bold leading-tight font-display">Descubre Nuevos
+            Libros</h2>
+          <p class="text-text-secondary text-sm font-normal leading-normal">Accede a un catálogo
+            curado y recomendaciones personalizadas.</p>
+        </div>
+      </div>
+      <div class="flex flex-1 gap-3 rounded-lg border border-surface-dark bg-surface-dark p-4 flex-col">
+        <div class="text-primary">
+          <span class="material-symbols-outlined" style="font-size: 32px;">groups</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-white text-lg font-bold leading-tight font-display">Conecta con Lectores
+          </h2>
+          <p class="text-text-secondary text-sm font-normal leading-normal">Únete a debates y
+            comparte tus opiniones con otros apasionados.</p>
+        </div>
+      </div>
+      <div class="flex flex-1 gap-3 rounded-lg border border-surface-dark bg-surface-dark p-4 flex-col">
+        <div class="text-primary">
+          <span class="material-symbols-outlined" style="font-size: 32px;">event</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-white text-lg font-bold leading-tight font-display">Participa en Eventos
+          </h2>
+          <p class="text-text-secondary text-sm font-normal leading-normal">Asiste a tertulias,
+            encuentros con autores y talleres exclusivos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- No nos mires => ¡Uneté! -->
+  <section class="my-16">
+    <div class="flex flex-col items-center justify-center gap-6 rounded-xl bg-surface-dark px-6 py-12 text-center">
+      <h2 class="font-serif text-3xl font-bold text-white">Únete a Nuestra Comunidad</h2>
+      <p class="max-w-xl text-text-light">Forma parte de nuestro círculo, comparte tus lecturas
+        favoritas y no te pierdas ninguno de nuestros eventos. ¡El próximo libro te está esperando!
+      </p>
+      <button routerLink="/auth/registro"
+        class="flex min-w-21 max-w-120 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-background-dark text-base font-bold leading-normal tracking-[0.015em] hover:brightness-110 transition-all">
+        <span class="truncate">Regístrate ahora</span>
+      </button>
+    </div>
+  </section>
+</main>

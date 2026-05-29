@@ -1,0 +1,45 @@
+<aside class="w-full">
+  <div class="sticky top-24">
+    <div class="flex flex-col p-4 pr-0 rounded-xl bg-gray-100 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800
+      max-h-[calc(100vh-18rem)]">
+      <div class="flex flex-col gap-4 overflow-auto pr-4">
+        <div class="flex flex-col mb-2">
+          <h2 class="text-gray-900 dark:text-white text-lg font-medium leading-normal">Filtros
+          </h2>
+          <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">
+            Refina tu
+            búsqueda</p>
+        </div>
+        <div class="flex flex-col max-[calc(100vh - 28rem)] gap-2 overflow-y-auto pr-6">
+          <app-desplegable-filtros-libro titulo="Género" [opciones]="opcionesGenero()" [seleccionados]="selectedGeneros"
+            (toggleOpcion)="toggleGenero($event)" [abierto]="true">
+          </app-desplegable-filtros-libro>
+
+          <app-desplegable-filtros-libro titulo="Autor" [opciones]="opcionesAutor()" [seleccionados]="selectedAutores"
+            (toggleOpcion)="toggleAutor($event)">
+          </app-desplegable-filtros-libro>
+
+          <app-desplegable-filtros-libro titulo="Año de Publicación" [opciones]="opcionesYear()"
+            [seleccionados]="selectedYears" (toggleOpcion)="toggleYear($event)">
+          </app-desplegable-filtros-libro>
+
+          <app-desplegable-filtros-libro titulo="Valoración" [opciones]="opcionesValoracion()"
+            [seleccionados]="selectedValoraciones" (toggleOpcion)="toggleValoracion($event)">
+          </app-desplegable-filtros-libro>
+        </div>
+        <div class="flex flex-col gap-2 pt-4 border-t border-gray-300 dark:border-gray-700">
+          <button type="button" aria-label="Aplicar filtros del catálogo"
+            class="flex w-full min-w-21 max-w-120 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]"
+            (click)="aplicarFiltros()">
+            <span class="truncate">Aplicar Filtros</span>
+          </button>
+          <button type="button" aria-label="Limpiar filtros del catálogo"
+            class="flex w-full min-w-21 max-w-120 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 text-sm font-bold leading-normal tracking-[0.015em]"
+            (click)="limpiarFiltros()">
+            <span class="truncate">Limpiar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>

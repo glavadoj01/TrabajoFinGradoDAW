@@ -1,0 +1,159 @@
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Aside Detalle -->
+    <div class="w-full lg:w-1/4 xl:w-1/5">
+      <aside
+        class="w-fit mx-auto border border-accent flex flex-col justify-center align-middle gap-4 bg-gray-900/40 rounded-xl p-6">
+        <h2 class="text-xl font-bold mb-2">{{detalle?.evento?.nombre_evento}}</h2>
+        <div class="flex items-center gap-2 text-gray-400">
+          <span class="material-symbols-outlined text-primary">calendar_today</span>
+          <div class="flex flex-col items-center gap-1">
+            <span>{{detalle?.evento?.fecha_evento | date:'EEEE'}}</span>
+            <span>{{detalle?.evento?.fecha_evento | date:'dd/MMMM/yyyy'}}</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-gray-400">
+          <span class="material-symbols-outlined text-primary">schedule</span>
+          <span>{{detalle?.evento?.hora_evento ?? '' | Hora }}</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-400">
+          <span class="material-symbols-outlined text-primary">location_on</span>
+          <span>{{detalle?.evento?.direccion_evento}}</span>
+        </div>
+        <div class="mt-4">
+          <div class="mb-2">Creador: <b>{{detalle?.evento?.nombreCreador}}</b></div>
+          <div class="mb-2">Asistentes: <b>{{detalle?.asistentes?.length || 0}}</b></div>
+        </div>
+
+        @if (puedeEditarEvento()) {
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-accent px-4 py-2 text-sm font-semibold text-accent"
+            (click)="iniciarEdicion()">Editar</button>
+          <button type="button"
+            class="rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-300 disabled:opacity-60"
+            [disabled]="borrando" (click)="borrarEvento()">
+            {{ borrando ? 'Eliminando...' : 'Eliminar evento' }}
+          </button>
+        </div>
+        }
+      </aside>
+    </div>
+    <div class="w-full lg:w-3/4 xl:w-4/5">
+      @if (cargando) {
+      <app-banner-cargando [elemento]="'evento'"></app-banner-cargando>
+      } @else if (!eventoEncontrado) {
+      <app-banner-error [elemento]="'evento'"></app-banner-error>
+      } @else {
+      <!-- Columna derecha (información extendida y libros relacionados) -->
+      <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-4 mb-6">
+        <div class="flex min-w-72 flex-col gap-1">
+          <h1 class="text-2xl font-bold mb-4">{{detalle?.evento?.nombre_evento}}</h1>
+          <div class="text-gray-300 text-base leading-relaxed space-y-4">
+            <p>{{detalle?.evento?.descripcion_evento}}</p>
+          </div>
+        </div>
+        @if (puedeEditarEvento()) {
+        <app-modal-evento-libros [idEvento]="detalle?.evento?.id_evento ?? -1"
+          [librosOriginales]="detalle?.libros ?? []"
+          (librosActualizados)="recargarDetalle(detalle?.evento?.id_evento ?? -1)"></app-modal-evento-libros>
+        }
+        <div class="flex gap-3 flex-wrap">
+          @if (siguiendoEvento) {
+          <button type="button"
+            class="px-4 py-2 rounded-lg border border-accent text-sm font-semibold transition disabled:opacity-50 hover:bg-accent/20"
+            [class.bg-accent]="meGustaEvento" [class.text-black]="meGustaEvento" [class.bg-transparent]="!meGustaEvento"
+            [class.text-accent]="!meGustaEvento" [disabled]="accionMeGustaCargando" (click)="toggleMeGustaEvento()">
+            {{ accionMeGustaCargando ? 'Actualizando...' : (meGustaEvento ? 'Quitar me gusta' : 'Me gusta') }}
+          </button>
+          }
+          <button type="button"
+            class="px-4 py-2 rounded-lg border border-accent text-sm font-semibold transition disabled:opacity-50 hover:bg-accent/20"
+            [class.bg-accent]="siguiendoEvento" [class.text-black]="siguiendoEvento"
+            [class.bg-transparent]="!siguiendoEvento" [class.text-accent]="!siguiendoEvento"
+            [disabled]="accionSeguimientoCargando" (click)="toggleSeguirEvento()">
+            {{ accionSeguimientoCargando ? 'Actualizando...' : (siguiendoEvento ? 'Dejar de seguir' : 'Seguir evento')
+            }}
+          </button>
+        </div>
+      </div>
+
+      @if (puedeEditarEvento() && editando) {
+      <section class="mb-8 rounded-2xl border border-accent/40 bg-gray-900/40 p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-lg font-semibold text-accent">Editar evento</h2>
+          <div class="flex gap-2">
+            <button type="button"
+              class="rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-gray-200"
+              (click)="cancelarEdicion()">Cancelar</button>
+            <button type="submit" form="evento-edit-form"
+              class="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black disabled:opacity-60"
+              [disabled]="guardandoCambios">
+              {{ guardandoCambios ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </div>
+        <form id="evento-edit-form" class="grid gap-4 md:grid-cols-2" [formGroup]="eventoForm"
+          (ngSubmit)="guardarCambios()">
+          <label class="flex flex-col gap-2 md:col-span-2">
+            <span class="text-sm text-gray-300">Nombre</span>
+            <input class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="nombre_evento" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Fecha</span>
+            <input type="date" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="fecha_evento" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Hora</span>
+            <input type="time" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="hora_evento" />
+          </label>
+          <label class="md:col-span-2 flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Dirección</span>
+            <input class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="direccion_evento" />
+          </label>
+          <label class="md:col-span-2 flex flex-col gap-2">
+            <span class="text-sm text-gray-300">Descripción</span>
+            <textarea rows="5" class="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-white"
+              formControlName="descripcion_evento"></textarea>
+          </label>
+        </form>
+      </section>
+      }
+
+
+      <div class="mt-8 w-full">
+        <h3 class="text-xl font-semibold text-primary mb-4">Libros Relacionados</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
+          @for (libro of detalle?.libros ?? []; track libro.id_libro) {
+          <app-libro-card [libro]="libro"></app-libro-card>
+          }
+        </div>
+      </div>
+
+      <!-- Comentarios -->
+      <section class="border-t border-white/10 pt-10 flex flex-col gap-8">
+        <app-comentario-nuevo [origen]="'evento'" [idOrigen]="detalle?.evento?.id_evento ?? -1"
+          (comentarioCreado)="onComentarioCreado()" />
+        <h2 class="text-xl font-bold mb-4">Comentarios</h2>
+        @if (errorComentarios) {
+        <output aria-live="polite" class="rounded-lg border border-amber-700 bg-amber-950/30 px-4 py-3 text-amber-700">
+          No se pudieron cargar los comentarios en este momento. Por favor, inténtalo de nuevo más tarde.
+        </output>
+        } @else if ((detalle?.comentarios?.length ?? 0) === 0) {
+        <output aria-live="polite" class="text-gray-400 text-sm">
+          Todavía no hay comentarios para este evento.
+        </output>
+        } @else {
+        @for (comentario of detalle?.comentarios ?? []; track comentario.id_eventoComentario) {
+        <app-comentario-existente [critica]="comentario" [elemento]="'evento'" (eventoFin)="recargarComentarios()"
+          [elementoId]="detalle?.evento?.id_evento ?? -1"></app-comentario-existente>
+        }
+        }
+      </section>
+      }
+    </div>
+  </div>
+</main>

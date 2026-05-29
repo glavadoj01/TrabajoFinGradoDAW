@@ -1,0 +1,40 @@
+<div class="flex flex-col gap-2">
+  <div class="flex gap-2">
+    <input [formControl]="buscarCtrl" (input)="searchUsuarios(buscarCtrl.value ?? '')"
+      placeholder="Buscar usuario/autor (mín 2 chars)" class="rounded-lg border px-2 py-1 flex-1" />
+    <button type="button" class="rounded border px-3" (click)="loadOpciones()">Recargar</button>
+  </div>
+
+  @if (opciones().length > 0) {
+  <div class="mt-2">
+    @for (o of opciones(); track $index) {
+    <div class="flex items-center justify-between gap-2 py-1">
+      <div>{{ o.displayName || (o.nombre_autor + ' ' + o.apellido_autor) || (o.nombre_usuario + ' ' + o.apellido_usuario) }}</div>
+      <button type="button" class="text-sm text-accent" (click)="addAutorFromOption(o)">Agregar</button>
+    </div>
+    }
+  </div>
+  }
+
+  @if (selected().length > 0) {
+  <div class="mt-2">
+    @for (s of selected(); track $index) {
+    <div class="flex items-center justify-between gap-2 py-1">
+      <div>{{ s.displayName || (s.nombre_autor + ' ' + s.apellido_autor) || (s.nombre_usuario + ' ' + s.apellido_usuario) }}</div>
+      <button type="button" class="text-sm text-red-400" (click)="removeAutor($index)">Quitar</button>
+    </div>
+    }
+  </div>
+  }
+
+  @if (puedeCrear) {
+  <div class="mt-3 grid grid-cols-2 gap-2">
+    <input #n class="rounded border px-2 py-1" placeholder="Nombre" />
+    <input #a class="rounded border px-2 py-1" placeholder="Apellido" />
+    <button type="button" class="col-span-2 rounded bg-accent text-black py-1"
+      (click)="crearAutor(n.value, a.value); n.value=''; a.value=''">
+      Crear autor
+    </button>
+  </div>
+  }
+</div>

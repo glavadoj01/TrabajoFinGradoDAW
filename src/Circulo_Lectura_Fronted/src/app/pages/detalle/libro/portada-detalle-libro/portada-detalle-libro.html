@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-6 md:col-span-1 items-center md:items-start">
+  <div class="w-full max-w-75 md:max-w-none shadow-2xl shadow-black/50">
+    <div class="w-full gap-1 overflow-hidden bg-background-element @[480px]:gap-2 aspect-2/3 rounded-xl flex">
+      <img [src]="portadaLibro()" alt="Portada del libro {{ tituloLibro() }}"
+        class="w-full aspect-auto rounded-xl object-cover object-center">
+    </div>
+  </div>
+  <modal-lista-libro class="min-w-21 w-full" [idUsuario]="idUsuario()" [idLibro]="idLibro()"></modal-lista-libro>
+  <button type="button" aria-label="Me gusta este libro" (click)="toggleMeGusta()" [class.bg-primary]="meGusta()"
+    [class.text-blanco-puro]="meGusta()" [class.bg-element]="!meGusta()" [class.text-primary]="!meGusta()"
+    class="flex min-w-21 w-full max-w-75 md:max-w-none cursor-pointer items-center justify-center overflow-hidden rounded-lg max-h-12 px-5 py-1 flex-1 
+      border border-primary text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/50 transition-colors">
+    <span class="truncate">{{ meGusta() ? 'Te gusta' : 'Me gusta' }}</span>
+  </button>
+</div>

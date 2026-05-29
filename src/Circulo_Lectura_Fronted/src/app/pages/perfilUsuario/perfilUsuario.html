@@ -1,0 +1,138 @@
+<main class="grow">
+  <div class="container mx-auto px-4 py-8 lg:px-8">
+    @if (cargando()) {
+    <app-banner-cargando elemento="Perfil de Usuario"></app-banner-cargando>
+    }
+    @else if (!encontrado()) {
+    <app-banner-error elemento="Usuario "></app-banner-error>
+    }
+    @else {
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+      <aside class="md:col-span-4 lg:col-span-3">
+        <usuario-card [usuario]="usuario()" (editar)="abrirModalEditar()"></usuario-card>
+        @if (modalEditar()) {
+        <app-modal-editar-usuario [usuario]="usuario()" (cerrar)="cerrarModalEditar()">
+        </app-modal-editar-usuario>
+        }
+      </aside>
+
+      <div class="md:col-span-8 lg:col-span-9">
+        <div class="flex flex-col gap-6">
+          <!-- Tabs -->
+          <div class="border-b border-white/10">
+            <nav aria-label="Tabs" class="-mb-px flex gap-2 md:gap-8 lg:gap-16 px-4">
+              <button aria-current="page"
+                class="group inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-primary px-1 py-4 text-sm font-bold text-primary cursor-pointer"
+                (click)="tabActiva.set('libros')" [class.border-primary]="tabActiva() === 'libros'"
+                [class.text-primary]="tabActiva() === 'libros'" href="#">Mis Libros</button>
+              <button aria-current="page"
+                class="group inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-primary px-1 py-4 text-sm font-bold text-primary cursor-pointer"
+                (click)="tabActiva.set('listas')" [class.border-primary]="tabActiva() === 'listas'"
+                [class.text-primary]="tabActiva() === 'listas'" href="#">Mis Listas</button>
+              <button aria-current="page"
+                class="group inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-primary px-1 py-4 text-sm font-bold text-primary cursor-pointer"
+                (click)="tabActiva.set('criticas')" [class.border-primary]="tabActiva() === 'criticas'"
+                [class.text-primary]="tabActiva() === 'criticas'" href="#">Mis Reseñas</button>
+              <button aria-current="page"
+                class="group inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-primary px-1 py-4 text-sm font-bold text-primary cursor-pointer"
+                (click)="tabActiva.set('eventos')" [class.border-primary]="tabActiva() === 'eventos'"
+                [class.text-primary]="tabActiva() === 'eventos'" href="#">Historial de Eventos</button>
+            </nav>
+          </div>
+
+          @if (tabActiva() === 'libros') {
+          <div class="px-4">
+            <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] text-white">
+              Mis Libros
+            </h2>
+          </div>
+
+          <div class="px-4">
+            <h3 class="font-bold text-white mb-2">Pendientes</h3>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              @for (libro of usuario().librosPendientes ?? []; track libro.id_libro) {
+              <app-libro-card [libro]="libro"></app-libro-card>
+              }
+            </div>
+          </div>
+
+          <div class="px-4 mt-6">
+            <h3 class="font-bold text-white mb-2">Leídos</h3>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              @for (libro of usuario().librosLeidos ?? []; track libro.id_libro) {
+              <app-libro-card [libro]="libro"></app-libro-card>
+              }
+            </div>
+          </div>
+          }
+          @else if (tabActiva()==='listas') {
+          <div class="flex flex-wrap items-center justify-between gap-4 px-4">
+            <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] text-white">
+              Mis Listas de Libros
+            </h2>
+            <button
+              class="flex h-10 min-w-21 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-primary px-4 text-sm font-bold leading-normal tracking-[0.015em] text-white hover:bg-primary/90">
+              <span class="material-symbols-outlined text-base">add</span>
+              <span class="truncate">Crear Nueva Lista</span>
+            </button>
+          </div>
+          <h3>Listas Creadas</h3>
+          <div class="grid grid-cols-1 gap-6 px-4 @container sm:grid-cols-2 @[640px]:grid-cols-3">
+
+            @for (lista of usuario().listasCreadas ?? []; track lista.id_lista) {
+            <lista-card [lista]="lista"></lista-card>
+            }
+          </div>
+          <h3>Listas Seguidas</h3>
+          <div class="grid grid-cols-1 gap-6 px-4 @container sm:grid-cols-2 @[640px]:grid-cols-3"></div>
+          @for (lista of usuario().listasSeguidas ?? []; track lista.id_lista) {
+          <lista-card [lista]="lista"></lista-card>
+          }
+          }
+          @else if (tabActiva()==='criticas') {
+          <div class="px-4">
+            <h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em]text-white">
+              Mis Reseñas
+            </h2>
+          </div>
+
+          <div class="flex flex-col gap-4 px-4">
+            @for (c of usuario().criticas ?? []; track c.id_libro) {
+            <a [routerLink]="['/detalle/libro', c.id_libro]"
+              class="block rounded-lg border border-white/10 bg-gray-800 hover:bg-gray-700">
+              <h3 class="font-semibold text-white mb-4">{{ c.titulo_libro }}</h3>
+              <app-comentario-existente [critica]="c" [elemento]="'perfil'" [elementoId]="0"></app-comentario-existente>
+            </a>
+            }
+          </div>
+          }
+          @else if (tabActiva()==='eventos') {
+          <div class="px-4">
+            <h2
+              class="text-[22px] font-bold leading-tight tracking-[-0.015em] text-white border-emerald-600/80 border-b-2 pb-4">
+              Historial de Eventos
+            </h2>
+            <div class="mt-4 border-emerald-600/80 border-y-2 pb-4 pt-4">
+              <h3 class="font-bold text-white mb-2">Eventos Organizdos</h3>
+              <div class="grid grid-cols-1 gap-6 px-4 sm:grid-cols-2 @[640px]:grid-cols-3">
+                @for (ev of usuario().eventosCreados ?? []; track ev.id_evento) {
+                <app-evento-card [evento]="ev"></app-evento-card>
+                }
+              </div>
+            </div>
+            <div class="mt-4 border-emerald-600/80 border-t-2 pt-4">
+              <h3 class="font-bold text-white mb-2">Eventos Asistidos</h3>
+              <div class="grid grid-cols-1 gap-6 px-4 sm:grid-cols-2 @[640px]:grid-cols-3">
+                @for (ev of usuario().eventosAsistidos ?? []; track ev.id_evento) {
+                <app-evento-card [evento]="ev"></app-evento-card>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</main>

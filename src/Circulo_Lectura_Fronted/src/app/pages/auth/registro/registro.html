@@ -1,0 +1,101 @@
+<div class="flex items-center justify-center min-h-full px-4 py-16">
+  <form [formGroup]="registroForm" (ngSubmit)="registrar()" class="w-full max-w-xl">
+    <fieldset
+      class="flex flex-col gap-6 bg-background-element border border-primary hover:ring-2 hover:ring-primary transition-all duration-300 rounded-box p-6 shadow-lg">
+      <legend class="fieldset-legend text-lg font-bold px-2">Registro</legend>
+
+      <div class="space-y-2 text-sm text-gray-600">
+        <p>Crea tu cuenta para guardar listas, seguir eventos y participar en el círculo.</p>
+      </div>
+
+      @if (error()) {
+      <app-banner-error [elemento]="'Registro'" [mensaje]="errorMensaje()"></app-banner-error>
+      }
+
+      @if (exito()) {
+      <div class="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700">
+        <p>Registro exitoso. ¡Bienvenido!</p>
+        <p class="text-xs text-emerald-500">Redirigiendo al inicio...</p>
+      </div>
+      }
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-nombre-usuario">Nombre de usuario</label>
+          <input id="registro-nombre-usuario" type="text" class="input" placeholder="Tu alias público"
+            formControlName="nombre_usuario" />
+          @if (registroForm.controls.nombre_usuario.touched && registroForm.controls.nombre_usuario.invalid) {
+          <p class="text-xs text-error">El nombre de usuario es obligatorio y debe tener al menos 2
+            caracteres.</p>
+          }
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-nombre-real">Nombre real</label>
+          <input id="registro-nombre-real" type="text" class="input" placeholder="Tu nombre"
+            formControlName="nombre_real" />
+          @if (registroForm.controls.nombre_real.touched && registroForm.controls.nombre_real.invalid) {
+          <p class="text-xs text-error">El nombre real es obligatorio y debe tener al menos 2
+            caracteres.</p>
+          }
+        </div>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-apellido-usuario">Apellido</label>
+          <input id="registro-apellido-usuario" type="text" class="input" placeholder="Opcional"
+            formControlName="apellido_usuario" />
+          @if (registroForm.controls.apellido_usuario.touched && registroForm.controls.apellido_usuario.invalid) {
+          <p class="text-xs text-error">Si lo rellenas, debe tener al menos 2 caracteres.</p>
+          }
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-email">Email</label>
+          <input id="registro-email" type="email" class="input" placeholder="correo@dominio.com"
+            formControlName="email_usuario" />
+          @if (registroForm.controls.email_usuario.touched && registroForm.controls.email_usuario.invalid) {
+          <p class="text-xs text-error">Introduce un email válido.</p>
+          }
+        </div>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-password">Contraseña</label>
+          <input id="registro-password" type="password" class="input" placeholder="8-15 caracteres"
+            formControlName="password" />
+          <p class="text-xs text-gray-500">
+            Debe incluir mayúscula, minúscula, número y un carácter especial.
+          </p>
+          @if (registroForm.controls.password.touched && registroForm.controls.password.invalid) {
+          <p class="text-xs text-error">La contraseña no cumple el formato requerido.</p>
+          }
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="label self-start" for="registro-password-repetida">Repite la contraseña</label>
+          <input id="registro-password-repetida" type="password" class="input" placeholder="Repite tu contraseña"
+            formControlName="passwordRepetida" />
+          @if (registroForm.touched && registroForm.errors?.['contraseñasNoCoinciden']) {
+          <p class="text-xs text-error">Las contraseñas no coinciden.</p>
+          }
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="cargando()"
+        class="flex self-center min-w-21 max-w-120 w-full items-center justify-center overflow-hidden rounded-lg h-11 px-4 bg-btn-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-btn-primary-hover focus-visible:outline-1 focus-visible:ring-2 focus-visible:ring-btn-primary-focus active:bg-btn-primary-pressed transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+        {{ cargando() ? 'Creando cuenta...' : 'Registrarme' }}
+      </button>
+    </fieldset>
+
+    <p class="text-center text-sm text-gray-600 mt-6 mb-4">
+      ¿Ya tienes una cuenta?
+    </p>
+    <a routerLink="/auth/login"
+      class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-btn-secondary text-secondary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-btn-secondary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-btn-secondary-focus active:bg-btn-secondary-pressed transition-all mx-auto">
+      <span class="truncate">Volver al login</span>
+    </a>
+  </form>
+</div>

@@ -1,0 +1,24 @@
+@if (!estaLogueado()){
+<btn-inicio-sesion></btn-inicio-sesion>
+<a routerLink="/auth/registro" class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 
+                    bg-btn-secondary text-secondary text-sm font-bold leading-normal tracking-[0.015em]
+                    hover:bg-btn-secondary-hover focus-visible:outline-none focus-visible:ring-2 
+                    focus-visible:ring-btn-secondary-focus active:bg-btn-secondary-pressed transition-all">
+  <span class="truncate">Registrarse</span>
+</a>
+} @else{
+<a [routerLink]="['/perfil-usuario/', usuarioId()]" class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 
+                    bg-btn-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] 
+                    hover:bg-btn-primary-hover focus-visible:outline-none focus-visible:ring-2 
+                    focus-visible:ring-btn-primary-focus active:bg-btn-primary-pressed transition-colors">
+  <span class="truncate">Mi Perfil</span>
+</a>
+<a routerLink="/" class="flex min-w-21 max-w-120 items-center justify-center overflow-hidden rounded-lg h-10 px-4 
+                    bg-btn-secondary text-secondary text-sm font-bold leading-normal tracking-[0.015em]
+                    hover:bg-btn-secondary-hover focus-visible:outline-none focus-visible:ring-2 
+                    focus-visible:ring-btn-secondary-focus active:bg-btn-secondary-pressed transition-all"
+  (click)="cerrarSesion()">
+  <span class="truncate">Cerrar Sesión</span>
+</a>
+
+}

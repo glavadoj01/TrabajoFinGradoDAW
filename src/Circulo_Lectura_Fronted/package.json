@@ -1,0 +1,68 @@
+{
+	"name": "circulo-lectura-fronted",
+	"version": "0.3.6",
+	"description": "Frontend de la aplicación Círculo de Lectura",
+	"homepage": "https://github.com/glavadoj01/Circulo_Lectura_Fronted#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/glavadoj01/Circulo_Lectura_Fronted.git"
+	},
+	"bugs": {
+		"url": "https://github.com/glavadoj01/Circulo_Lectura_Fronted/issues"
+	},
+	"license": "GNU General Public License v3.0",
+	"author": "Gonzalo Lavado",
+	"type": "module",
+	"main": "src/main.ts",
+	"volta": {
+		"node": "22.22.2",
+		"npm": "11.6.4"
+	},
+	"scripts": {
+		"ng": "ng",
+		"reinstall": "rm -rf node_modules package-lock.json && npm install",
+		"build": "ng build",
+		"watch": "ng build --watch --configuration development",
+		"start": "clear && ng serve",
+		"start:local": "clear && ng serve --host 0.0.0.0",
+		"run": "clear && npm run reinstall && clear && npm run start"
+	},
+	"prettier": {
+		"useTabs": true,
+		"tabWidth": 2,
+		"printWidth": 120,
+		"singleQuote": false,
+		"singleAttributePerLine": true,
+		"arrowParens": "avoid",
+		"overrides": [
+			{
+				"files": "*.html",
+				"options": {
+					"parser": "angular"
+				}
+			}
+		]
+	},
+	"private": true,
+	"dependencies": {
+		"@angular/common": "^21",
+		"@angular/compiler": "^21",
+		"@angular/core": "^21",
+		"@angular/forms": "^21",
+		"@angular/platform-browser": "^21",
+		"@angular/router": "^21",
+		"rxjs": "~7.8.0",
+		"tslib": "^2.3.0",
+		"zone.js": "~0.15.0"
+	},
+	"devDependencies": {
+		"@angular/build": "^21",
+		"@angular/cli": "^21",
+		"@angular/compiler-cli": "^21",
+		"@tailwindcss/postcss": "^4.2.2",
+		"daisyui": "^5.5.19",
+		"postcss": "^8.5.10",
+		"tailwindcss": "^4.2.2",
+		"typescript": "~5.9.2"
+	}
+}

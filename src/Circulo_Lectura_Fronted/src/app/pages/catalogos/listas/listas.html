@@ -1,0 +1,52 @@
+<div class="flex flex-col gap-4 mt-8">
+  <!-- Cabecera -->
+  <div class="flex flex-wrap justify-between gap-4 p-4 items-center">
+    <div class="flex min-w-72 flex-col gap-3">
+      <p class="text-4xl font-black leading-tight tracking-[-0.033em]">Explora las Listas de Lectura</p>
+      <p class="text-text-primary text-base font-normal leading-normal">
+        Descubre colecciones creadas por y para amantes de los libros de nuestra comunidad.
+      </p>
+    </div>
+    @if (this.getUsuario()) {
+    <modal-lista-libro [idUsuario]="this.getUsuario() ?? 0" [textoBoton]="'Crear Lista'" class="self-start mr-15" />
+    }
+  </div>
+
+  <!-- Barra de búsqueda y filtros -->
+  <div class="flex flex-col gap-10 justify-center items-center w-full">
+    <div class="flex flex-col xl:flex-row gap-4 justify-between items-center px-4 py-3 w-full">
+      <div class="w-full">
+        <busqueda-listas #busqueda (buscar)="buscarLista($event)"></busqueda-listas>
+      </div>
+      <filtros-listas #filtros [filtro]="filtroCategoria" [categorias]="categorias()"
+        (filtroChange)="filtroCategoria.set($event)"></filtros-listas>
+    </div>
+    @if (filtroCategoria() !== 'Todas' || terminoBusqueda()) {
+    <button
+      class="flex min-w-21 max-w-120 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary text-black text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"
+      (click)="limpiarFiltros()">
+      <span class="truncate">Limpiar Filtros</span>
+    </button>
+    }
+  </div>
+
+  @if(this.cargando()) {
+  <app-banner-cargando elemento="listas"></app-banner-cargando>
+  } @else if (this.error() || !listas() || listasFiltradas().length === 0) {
+  <app-banner-error elemento="listas"></app-banner-error>
+  } @else if (listasFiltradas().length > 0) {
+  <!-- Contenedor de listas -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 p-4">
+    @for (lista of listasFiltradas(); track lista.id_lista) {
+    <lista-card [lista]="lista"></lista-card>
+    }
+  </div>
+
+  <!-- Paginación (placeholder, lógica real pendiente de integración) -->
+  <div class="flex justify-center p-4 mt-8">
+    <app-paginacion [paginaActual]="pagina()" [totalPaginas]="totalPaginas()"
+      (paginaSeleccionada)="cambiarPagina($event)">
+    </app-paginacion>
+  </div>
+  }
+</div>

@@ -1,0 +1,88 @@
+<div class="flex flex-col gap-4 p-6 border border-white/10 rounded-xl">
+  <div class="flex items-center gap-8">
+    <div class="flex flex-col gap-1 items-center">
+      <a class="font-semibold text-white decorator-none mb-2 hover:text-primary"
+        [routerLink]="['/perfil-usuario/', idUsuario()]">
+        <span>{{usuarioNombre() || ""}}</span>
+      </a>
+      <img class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+        [attr.alt]="'Avatar of user ' + usuarioNombre" [src]="imagenAvatar()" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <p class="font-semibold text-white">
+        <span>{{tituloComentario}}</span>
+      </p>
+      <div class="flex flex-col items-center gap-2">
+        <p class="text-xs text-gray-400 self-start">
+          {{fechaComentario | tiempoRelativo}}
+        </p>
+        <div [class.hidden]="calificacion == null">
+          <app-estrellas-puntuacion [puntuacion]="calificacion | puntuacionNormalizada">
+          </app-estrellas-puntuacion>
+        </div>
+      </div>
+    </div>
+    @if(esElAutor() && this.elemento() !== "perfil"){
+    <div class="flex gap-2">
+      <button class="bg-primary hover:bg-primary/60 text-white py-2 px-4 rounded-lg transition-colors"
+        (click)="editarComentario()">
+        Editar
+      </button>
+      <button class="bg-error hover:bg-error/60 text-white py-2 px-4 rounded-lg transition-colors"
+        (click)="eliminarComentario()">
+        Eliminar
+      </button>
+    </div>
+    }
+  </div>
+  @if(feedbackExito()){
+  <p class="text-white bg-success text-center">{{feedbackExito()}}</p>
+  }
+  @if(feedbackError()){
+  <p class="text-black bg-error/80 text-center">{{feedbackError()}}</p>
+  }
+  <p class="text-gray-300 text-sm leading-relaxed mt-2 text-justify" [innerHTML]="textoComentario | linebreaks">
+  </p>
+</div>
+
+@if(editando()){
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-900 p-6 rounded-xl w-full max-w-lg flex flex-col gap-4">
+
+    <h2 class="text-xl font-semibold text-black dark:text-white">Editar comentario</h2>
+
+    <form [formGroup]="formEdicion" (ngSubmit)="$event.stopProgagation(); $event.preventDefault()"
+      class="flex flex-col gap-4">
+      @if(this.elemento() !== "evento"){
+      <div>
+        <label class="text-black dark:text-white text-sm">Título</label>
+        <input type="text" class="p-2 rounded bg-gray-200 dark:bg-gray-800 text-black dark:text-white w-full"
+          formControlName="titulo">
+      </div>
+      }
+      <div>
+        <label class="text-black dark:text-white text-sm">Puntuación</label>
+        <input type="number" min="0" max="5"
+          class="p-2 rounded bg-gray-200 dark:bg-gray-800 text-black dark:text-white w-full"
+          formControlName="puntuacion">
+      </div>
+
+      <div>
+        <label class="text-black dark:text-white text-sm">Texto</label>
+        <textarea rows="4" class="p-2 rounded bg-gray-200 dark:bg-gray-800 text-black dark:text-white w-full"
+          formControlName="texto"></textarea>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          (click)="cancelarEdicion(); $event.stopPropagation(); $event.preventDefault()">Cancelar</button>
+
+        <button type="button" class="bg-primary hover:bg-primary/60 text-white py-2 px-4 rounded"
+          (click)="guardarEdicion(); $event.stopPropagation(); $event.preventDefault()">Guardar</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+}

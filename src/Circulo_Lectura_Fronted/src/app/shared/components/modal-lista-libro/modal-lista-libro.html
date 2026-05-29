@@ -1,0 +1,58 @@
+<button type="button" aria-label="Abrir modal para añadir libro a lista"
+  class="$$btn flex mx-auto w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg max-h-12 px-5 py-1 flex-1 bg-primary text-blanco-puro text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"
+  (click)="openModal()">{{ textoBoton }}</button>
+<dialog #modalRef class="$$modal modal-listas" (click)="$event.stopPropagation()">
+  <div class="$$modal-box">
+    <div class="$$modal-action px-4 py-4 flex flex-col items-center gap-4">
+      <form novalidate method="dialog" class="flex flex-col items-center gap-4">
+        <fieldset class="w-full flex flex-col items-center gap-4">
+          @if (cargandoListas()) {
+          <div>Cargando tus listas...</div>
+          }
+          @if (errorListas()) {
+          <div class="text-error">{{errorListas()}}</div>
+          }
+          @if (!cargandoListas() && listas().length) {
+          <ul class="w-full flex flex-col gap-2 items-center">
+            @for (lista of listas(); track lista.id_lista) {
+            <li id="{{ lista.id_lista }}"
+              class="cursor-pointer w-full flex items-center justify-between gap-2 rounded-lg border border-primary px-4 py-2 hover:bg-primary/10 transition-colors"
+              (click)="onAddLibroToLista(lista.id_lista)">
+              <span>{{lista.nombre_lista}}</span>
+              <span class="material-symbols-outlined">add</span>
+            </li>
+            }
+          </ul>
+          }
+          @if (!cargandoListas() && !listas().length) {
+          <div>No tienes listas creadas.</div>
+          }
+        </fieldset>
+      </form>
+      <form (ngSubmit)="onCrearListaYAgregar()" method="dialog" class="flex flex-col items-center gap-4 w-full">
+        <div class="w-full flex flex-col gap-2 items-center mt-4">
+          <input class="input input-bordered w-full" placeholder="Nombre de la nueva lista" [value]="nombreNuevaLista()"
+            (input)="nombreNuevaLista.set($any($event.target).value)" name="nombreNuevaLista" />
+          <input class="input input-bordered w-full" placeholder="Descripción (opcional)"
+            [value]="descripcionNuevaLista()" (input)="descripcionNuevaLista.set($any($event.target).value)"
+            name="descripcionNuevaLista" />
+          <button class="$$btn btn-primary w-full" type="button" [disabled]="creandoLista()"
+            (click)="onCrearListaYAgregar()">
+            {{ creandoLista() ? 'Creando...' : 'Crear lista y añadir libro' }}
+          </button>
+        </div>
+        @if (loadingAccion() || creandoLista()) {
+        <div class="text-primary">Procesando...</div>
+        }
+        @if (feedback() && !errorSesion()) {
+        <div class="text-success">{{feedback()}}</div>
+        }
+        @if (errorSesion()) {
+        <div class="text-error">{{feedback()}}</div>
+        <btn-inicio-sesion />
+        }
+      </form>
+      <button class="$$btn mt-2 btn btn-secondary" type="button" (click)="modalRef.close()">Cerrar</button>
+    </div>
+  </div>
+</dialog>

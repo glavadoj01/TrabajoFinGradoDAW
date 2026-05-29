@@ -1,0 +1,48 @@
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Aside Filtros -->
+    <div class="w-full lg:w-1/4 xl:w-1/5">
+      <app-filtros-libros (filtrosAplicados)="aplicarFiltros($event)"></app-filtros-libros>
+    </div>
+    <!-- Catalogo de Libros -->
+    <div class="w-full lg:w-3/4 xl:w-4/5">
+      @if (cargando()) {
+      <app-banner-cargando [elemento]="'Catálogo de libros'"></app-banner-cargando>
+      } @else if (errorCarga()) {
+      <app-banner-error [elemento]="'Catálogo de libros'"></app-banner-error>
+      } @else{
+      <!-- Cabecera Catalogo -->
+      <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-4 mb-6">
+        <div class="flex min-w-72 flex-col gap-1">
+          <h1 class="text-white text-3xl font-black leading-tight tracking-[-0.033em]">
+            Explora nuestra Biblioteca
+          </h1>
+          <p class="text-gray-400 text-base font-normal leading-normal">
+            Mostrando {{ primeraPosicionPagina() }}-{{ ultimaPosicionPagina() }} de {{ totalResultados() }}
+            resultados.
+          </p>
+        </div>
+      </div>
+      @if (librosPagina().length === 0) {
+      <section class="rounded-xl bg-white/5 p-6">
+        <h2 class="text-white/60 text-2xl font-bold">Sin libros disponibles</h2>
+        <p class="text-gray-400 mt-2">No hay resultados para mostrar.</p>
+      </section>
+      } @else {
+      <!-- Contenedor CatalogoLibros -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+        @for (libro of librosPagina(); track libro.id_libro) {
+        <app-libro-card [libro]="libro"></app-libro-card>
+        }
+      </div>
+
+      <!-- Paginación -->
+      <div class="flex justify-center mt-12">
+        <app-paginacion [paginaActual]="paginaActual()" [totalPaginas]="totalPaginas()"
+          (paginaSeleccionada)="cambiarPagina($event)"></app-paginacion>
+      </div>
+      } <!-- Fin del else pagina-->
+      } <!-- Fin del else errorCarga-->
+    </div>
+  </div>
+</main>
