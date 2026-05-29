@@ -397,6 +397,6 @@ Estos token han sido insertados manualmente en la tabla de sesiones desde el scr
 ## Anexos (opcional)
 
 - **Anexo I:** [Instalación Requisitos.md](anexos/01-Instalación_Requisitos.md)
-- **Anexo II:** [Rutas para peticiones de ejemplo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/02-Rutas_Back_Ejemplos.pdf)
+- **Anexo II:** [Rutas para peticiones de ejemplo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/blob/main/anexos/02-Rutas_Back_Ejemplos.pdf)
 - **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/blob/main/anexos/Diagramas/)
 - **Anexo IX**: [Entregas Pasadas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/blob/main/anexos/Presentaciones_Pasadas/)
