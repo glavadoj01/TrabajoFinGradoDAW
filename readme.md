@@ -150,7 +150,7 @@ El proyecto integra contenidos de:
 
 **Diagrama E/R**
 
-![Diagrama ER](Diagramas/01-Modelo.png)
+![Diagrama ER](anexos/Diagramas/01-Modelo.png)
 
 **Modelo Relacional**
 
@@ -398,5 +398,5 @@ Estos token han sido insertados manualmente en la tabla de sesiones desde el scr
 
 - **Anexo I:** [Instalación Requisitos.md](anexos/01-Instalación_Requisitos.md)
 - **Anexo II:** [Rutas para peticiones de ejemplo](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/02-Rutas_Back_Ejemplos.pdf)
-- **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Diagramas/)
-- **Anexo IX**: [Entregas Pasadas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/anexos/Presentaciones_Pasadas/)
+- **Anexo III:** [Diagramas y prototipos](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/blob/main/anexos/Diagramas/)
+- **Anexo IX**: [Entregas Pasadas](https://github.com/suarezfigueroa/2025-2026_GonzaloLavado/blob/main/anexos/Presentaciones_Pasadas/)
