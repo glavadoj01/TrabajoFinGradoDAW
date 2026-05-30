@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./src/BackEnd_Circulo_Lectura
+      dockerfile: Dockerfile
+    container_name: backend_server
+    restart: "no"
+
+    env_file:
+      - ./src/BackEnd_Circulo_Lectura/.env
+
+    environment:
+      DB_HOST: mysql
+
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./src/Circulo_Lectura_Fronted
+      dockerfile: Dockerfile
+    container_name: frontend_server
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

@@ -56,7 +56,9 @@ José Andrés Paredes Arribas
     - [8.4 Roles de la aplicación](#84-roles-de-la-aplicación)
     - [8.5 Usuarios creados para pruebas](#85-usuarios-creados-para-pruebas)
   - [9. Lógica/codificación del proyecto](#9-lógicacodificación-del-proyecto)
-  - [10. Despliegue Web del proyecto](#10-despliegue-web-del-proyecto)
+  - [10. Despliegue del proyecto](#10-despliegue-del-proyecto)
+    - [10.1 Despliegue manual](#101-despliegue-manual)
+    - [10.2 Despliegue con DockerComposse](#102-despliegue-con-dockercomposse)
   - [11. Manual de usuario](#11-manual-de-usuario)
   - [12. Conclusiones y aspectos a mejorar](#12-conclusiones-y-aspectos-a-mejorar)
   - [13. Bibliografía](#13-bibliografía)
@@ -319,7 +321,9 @@ main.ts                                         # Ejecuta la verificación de va
 
 ---
 
-## 10. Despliegue Web del proyecto
+## 10. Despliegue del proyecto
+
+### 10.1 Despliegue manual
 
 - Requisitos: NodeJS, MySQL, Angular CLI
 - Variables de entorno en `.env`
@@ -335,6 +339,8 @@ main.ts                                         # Ejecuta la verificación de va
 - Reset de BD:
 
   `GET http://localhost:3000/resetAPI` (Navegador/Postman)
+
+### 10.2 Despliegue con DockerComposse
 
 ---
 
