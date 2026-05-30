@@ -2,23 +2,6 @@
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
 	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"rootDir": "./src",
-		"paths": {
-			"@app/*": ["./src/app/*"],
-			"@pages/*": ["./src/app/pages/*"],
-			"@services/*": ["./src/app/services/*"],
-			"@sharedComponents/*": ["./src/app/shared/components/*"],
-			"@utils/*": ["./src/app/shared/utils/*"],
-			"@pipes/*": ["./src/app/shared/pipes/*"],
-			"@interfaces/*": ["./src/app/interfaces/*"],
-			"@environments/*": ["./src/environments/*"],
-			"@interceptors/*": ["./src/app/shared/interceptors/*"],
-			"@guards/*": ["./src/app/shared/guards/*"],
-			"@directives/*": ["./src/app/shared/directives/*"]
-		},
-		"types": []
-	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["src/**/*.spec.ts"]
 }

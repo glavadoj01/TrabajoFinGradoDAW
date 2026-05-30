@@ -105,3 +105,15 @@ docker compose up -d backend
 docker compose build frontend
 docker compose up -d frontend
 ```
+
+# Apagar
+
+```bash
+docker compose down
+```
+
+# Apagar con borrado
+
+```bash
+docker compose down -v
+```
